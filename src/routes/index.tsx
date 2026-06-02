@@ -1,25 +1,30 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
-import cloudinary from "cloudinary-video-player";
-import "cloudinary-video-player/player.min.css";
 import heroBoard from "@/assets/hero-board.jpg";
 import caseStudy from "@/assets/case-study.jpg";
 
 function CloudinaryHeroVideo() {
   const ref = useRef<HTMLVideoElement>(null);
+  const playerRef = useRef<ReturnType<import("cloudinary-video-player")["default"]["player"]>>();
 
   useEffect(() => {
     if (!ref.current) return;
-    const player = cloudinary.player(ref.current, {
-      cloudName: "dusug5s9p",
-      publicId: "17076-278405108_wigpqo",
-      autoplay: true,
-      muted: true,
-      loop: true,
-      controls: false,
-      preload: "auto",
-    });
-    return () => player.destroy();
+    (async () => {
+      const cloudinary = await import("cloudinary-video-player");
+      await import("cloudinary-video-player/player.min.css");
+      playerRef.current = cloudinary.default.player(ref.current!, {
+        cloudName: "dusug5s9p",
+        publicId: "17076-278405108_wigpqo",
+        autoplay: true,
+        muted: true,
+        loop: true,
+        controls: false,
+        preload: "auto",
+      });
+    })();
+    return () => {
+      if (playerRef.current) playerRef.current.destroy();
+    };
   }, []);
 
   return (
