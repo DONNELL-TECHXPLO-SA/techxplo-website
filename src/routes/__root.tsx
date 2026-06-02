@@ -72,8 +72,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Moore Tech Consulting — Apple, Microsoft & ICT, Sandton" },
-      { name: "description", content: "Sandton-based ICT partner supplying Apple, Microsoft and accessories with expert technical support for South African businesses." },
+      { title: "TechXplo — Software Development & Digital Innovation, Johannesburg" },
+      {
+        name: "description",
+        content:
+          "TechXplo delivers top-tier software solutions, digital transformation, AI-enabled services, and tech-supported NPO projects across Johannesburg and South Africa.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -81,7 +85,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@300;500;700&family=Space+Mono&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@300;500;700&family=Space+Mono&display=swap",
+      },
     ],
   }),
   shellComponent: RootShell,

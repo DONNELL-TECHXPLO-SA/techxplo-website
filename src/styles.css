@@ -44,10 +44,10 @@
 :root {
   --radius: 0.25rem;
 
-  /* Brand tokens — Lime Terminal direction */
+  /* Brand tokens */
   --brand-bg: oklch(0.13 0 0);
   --brand-card: oklch(0.18 0 0);
-  --brand-accent: oklch(0.93 0.21 122);
+  --brand-accent: #9281f1;
   --brand-border: oklch(0.27 0 0);
   --brand-muted: oklch(0.62 0 0);
 
@@ -79,8 +79,12 @@
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
-  html { background-color: var(--color-brand-bg); }
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    background-color: var(--color-brand-bg);
+  }
   body {
     background-color: var(--color-brand-bg);
     color: var(--color-foreground);
@@ -90,7 +94,9 @@
 }
 
 @keyframes marquee {
-  to { transform: translateX(-50%); }
+  to {
+    transform: translateX(-50%);
+  }
 }
 .animate-marquee {
   animation: marquee 40s linear infinite;

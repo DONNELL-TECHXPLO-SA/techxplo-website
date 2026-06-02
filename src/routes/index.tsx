@@ -1,22 +1,51 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useRef } from "react";
+import cloudinary from "cloudinary-video-player";
+import "cloudinary-video-player/player.min.css";
 import heroBoard from "@/assets/hero-board.jpg";
 import caseStudy from "@/assets/case-study.jpg";
+
+function CloudinaryHeroVideo() {
+  const ref = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const player = cloudinary.player(ref.current, {
+      cloudName: "dusug5s9p",
+      publicId: "17076-278405108_wigpqo",
+      autoplay: true,
+      muted: true,
+      loop: true,
+      controls: false,
+      preload: "auto",
+    });
+    return () => player.destroy();
+  }, []);
+
+  return (
+    <video
+      ref={ref}
+      className="cld-video-player absolute inset-0 w-full h-full object-cover"
+      playsInline
+    />
+  );
+}
 
 export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Moore Tech Consulting — Apple, Microsoft & ICT Procurement, Sandton" },
+      { title: "TechXplo — Software Development & Digital Innovation, Johannesburg" },
       {
         name: "description",
         content:
-          "Moore Tech Consulting is a Sandton-based ICT partner supplying Apple devices, Microsoft software, accessories and expert technical support for South African businesses and schools.",
+          "TechXplo delivers top-tier software solutions, digital transformation, AI-enabled services, and tech-supported NPO projects across Johannesburg and South Africa.",
       },
-      { property: "og:title", content: "Moore Tech Consulting — Enterprise ICT, Sandton" },
+      { property: "og:title", content: "TechXplo — Software Development & Digital Innovation" },
       {
         property: "og:description",
         content:
-          "Apple, Microsoft and ICT procurement, deployment and managed support. Authorised Microsoft and Rectron partner.",
+          "Custom software development, digital transformation, AI solutions, and automation. Trusted by Google, Microsoft, OpenAI, GitHub, and Canva.",
       },
     ],
   }),
@@ -25,39 +54,39 @@ export const Route = createFileRoute("/")({
 const services = [
   {
     n: "01",
-    title: "Apple Devices",
-    desc: "End-to-end procurement and deployment of Mac, iPad, iPhone and accessories for creative teams, enterprise fleets and education.",
-    bullets: ["MAC FLEET ROLLOUTS", "EDUCATION PRICING"],
+    title: "Digital Transformation",
+    desc: "TechXplo helps businesses modernize legacy systems with innovative digital transformation solutions that enhance efficiency and scalability.",
+    bullets: ["LEGACY SYSTEM MODERNIZATION", "SCALABLE SOLUTIONS"],
   },
   {
     n: "02",
-    title: "Microsoft Software",
-    desc: "Authorised Microsoft distributor — licensing, Microsoft 365 tenancy, Azure migration and Intune device management.",
-    bullets: ["365 & AZURE LICENSING", "TENANT HARDENING"],
+    title: "Software Development",
+    desc: "TechXplo delivers custom solutions tailored to business needs, streamlining workflows, optimizing customer experiences, and enabling agile decision-making.",
+    bullets: ["CUSTOM SOFTWARE", "WORKFLOW OPTIMIZATION"],
   },
   {
     n: "03",
-    title: "Accessories & Network",
-    desc: "Apple-certified cases, chargers, cables, audio, smart-home and the networking gear that keeps it all online.",
-    bullets: ["APPLE-CERTIFIED STOCK", "SMB NETWORKING KIT"],
+    title: "AI Enabled Services",
+    desc: "Harness the power of artificial intelligence to automate processes, gain insights, and create intelligent applications that drive business growth.",
+    bullets: ["AI AUTOMATION", "INTELLIGENT APPS"],
   },
   {
     n: "04",
-    title: "Tech Support",
-    desc: "Remote and scheduled on-site technical support across Johannesburg — break-fix, managed maintenance, and bulk device care.",
-    bullets: ["ON-SITE SANDTON RESPONSE", "MANAGED IT CONTRACTS"],
+    title: "Mobile Application Development",
+    desc: "Build powerful, user-friendly mobile applications for iOS and Android that engage users and extend your business reach.",
+    bullets: ["iOS & ANDROID APPS", "USER-CENTRIC DESIGN"],
   },
   {
     n: "05",
-    title: "Business Procurement",
-    desc: "Bulk discounts, device management services and scheduled on-site technical support for businesses of every size.",
-    bullets: ["BULK SME DISCOUNTS", "DEVICE LIFECYCLE"],
+    title: "Tech-supported NPO Projects",
+    desc: "TechXplo offers web development and app solutions for NPOs at no cost or low-bono, helping to expand their impact and reach more communities.",
+    bullets: ["PRO-BONO SOLUTIONS", "COMMUNITY IMPACT"],
   },
   {
     n: "06",
-    title: "Education & Home",
-    desc: "Seasonal educational pricing, student bundles and convenient home delivery for Microsoft and Apple ecosystems.",
-    bullets: ["STUDENT BUNDLES", "HOME DELIVERY"],
+    title: "Automation & Data Solutions",
+    desc: "Streamline operations with intelligent automation and data-driven solutions that turn raw information into actionable business intelligence.",
+    bullets: ["PROCESS AUTOMATION", "DATA INTELLIGENCE"],
   },
 ];
 
@@ -72,14 +101,40 @@ function Index() {
               <div className="size-4 bg-black rotate-45" />
             </div>
             <span className="font-display text-xl font-bold tracking-tight uppercase">
-              Moore<span className="text-brand-accent">Tech</span>
+              Tech<span className="text-brand-accent">Xplo</span>
             </span>
           </a>
           <div className="hidden md:flex items-center gap-10">
-            <a href="#services" className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors">Services</a>
-            <a href="#partners" className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors">Partners</a>
-            <a href="#case" className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors">Work</a>
-            <a href="#contact" className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors">Contact</a>
+            <a
+              href="#about"
+              className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
+            >
+              About
+            </a>
+            <a
+              href="#services"
+              className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
+            >
+              Services
+            </a>
+            <a
+              href="#partners"
+              className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
+            >
+              Partners
+            </a>
+            <a
+              href="#case"
+              className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
+            >
+              Work
+            </a>
+            <a
+              href="#contact"
+              className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
+            >
+              Contact
+            </a>
           </div>
           <a
             href="#contact"
@@ -91,8 +146,12 @@ function Index() {
       </nav>
 
       {/* Hero */}
-      <section id="top" className="relative pt-24 md:pt-32 pb-20 px-6">
-        <div className="max-w-7xl mx-auto">
+      <section id="top" className="relative pt-12 md:pt-20 pb-20 px-6 overflow-hidden">
+        <div className="absolute inset-0">
+          <CloudinaryHeroVideo />
+        </div>
+        <div className="absolute inset-0 bg-black/60" />
+        <div className="max-w-7xl mx-auto relative z-10">
           <div className="grid grid-cols-12 gap-8 items-end">
             <div className="col-span-12 lg:col-span-8">
               <div className="inline-flex items-center gap-3 px-3 py-1 border border-brand-border rounded-full mb-8">
@@ -101,31 +160,31 @@ function Index() {
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-accent" />
                 </span>
                 <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-stone-400">
-                  EM Enterprise // Sandton, ZA
+                  TechXplo // Johannesburg, ZA
                 </span>
               </div>
               <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.9] tracking-tighter mb-10">
-                APPLE, MICROSOFT <br />
+                EXPERIENCE THE <br />
                 <span
                   className="text-transparent"
                   style={{ WebkitTextStroke: "1px rgba(255,255,255,0.25)" }}
                 >
-                  & THE ICT STACK
+                  REAL
                 </span>{" "}
                 <br />
-                THAT RUNS BUSINESS.
+                INNOVATION.
               </h1>
               <p className="max-w-xl text-stone-400 text-lg leading-relaxed mb-10">
-                Moore Tech Consulting is a Sandton-based ICT partner. We supply Mac and Microsoft
-                hardware, licensing and accessories — then keep it all running with expert technical
-                support for South African businesses, schools and creative professionals.
+                TechXplo delivers top-tier software solutions designed to streamline operations,
+                boost efficiency, and drive innovation for your business — from custom development
+                to digital transformation and AI-enabled services across South Africa.
               </p>
               <div className="flex flex-wrap gap-4">
                 <a
                   href="#contact"
                   className="px-7 py-3 bg-brand-accent text-black font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-opacity"
                 >
-                  Request a Quote
+                  Get a Quote
                 </a>
                 <a
                   href="#services"
@@ -136,7 +195,7 @@ function Index() {
               </div>
             </div>
             <div className="col-span-12 lg:col-span-4 flex flex-col items-end">
-              <div className="w-full aspect-square border border-brand-border bg-brand-card p-1 relative">
+              <div className="w-full aspect-square border border-brand-border bg-brand-card/80 p-1 relative">
                 <img
                   src={heroBoard}
                   alt="Macro shot of a high-performance computing board"
@@ -145,7 +204,7 @@ function Index() {
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute bottom-4 left-4 font-mono text-[10px] text-brand-accent">
-                  [SANDTON · LAT -26.10 · LON 28.05]
+                  [JOHANNESBURG · LAT -26.20 · LON 28.04]
                 </div>
               </div>
             </div>
@@ -157,16 +216,15 @@ function Index() {
       <section className="border-y border-brand-border bg-brand-card/30">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4">
           {[
-            { l: "Years in ICT", v: "10+", a: "" },
-            { l: "Active Clients", v: "120", a: "+" },
-            { l: "Avg. Response", v: "30", a: "min" },
-            { l: "Cert. Partners", v: "L1", a: "+" },
+            { l: "Members", v: "30", a: "+" },
+            { l: "Partners", v: "5", a: "+" },
+            { l: "Social Following", v: "700", a: "+" },
+            { l: "Projects Delivered", v: "50", a: "+" },
           ].map((s, i) => (
-            <div
-              key={s.l}
-              className={`p-8 ${i < 3 ? "border-r border-brand-border" : ""}`}
-            >
-              <div className="text-xs font-mono text-stone-500 mb-2 uppercase tracking-widest">{s.l}</div>
+            <div key={s.l} className={`p-8 ${i < 3 ? "border-r border-brand-border" : ""}`}>
+              <div className="text-xs font-mono text-stone-500 mb-2 uppercase tracking-widest">
+                {s.l}
+              </div>
               <div className="text-3xl md:text-4xl font-display font-bold">
                 {s.v}
                 <span className="text-brand-accent">{s.a}</span>
@@ -177,29 +235,28 @@ function Index() {
       </section>
 
       {/* Client marquee */}
-      <section aria-label="Our clients" className="border-b border-brand-border overflow-hidden py-8 bg-brand-bg">
+      <section
+        aria-label="Our clients"
+        className="border-b border-brand-border overflow-hidden py-8 bg-brand-bg"
+      >
         <p className="text-center text-[10px] font-mono uppercase tracking-[0.4em] text-stone-500 mb-6">
-          Trusted by teams across South Africa
+          Trusted by industry leaders
         </p>
         <div className="relative">
           <div className="flex w-max animate-marquee gap-16 items-center px-8">
             {[
-              "2ROADS GROUP",
-              "RECTRON",
+              "GOOGLE",
+              "GITHUB",
               "MICROSOFT",
-              "APPLE AUTHORISED",
-              "GAUTENG EDU",
-              "SANDTON SME",
-              "JOZI CREATIVE CO.",
-              "LIMPOPO ACADEMY",
-              "2ROADS GROUP",
-              "RECTRON",
+              "OPENAI",
+              "CANVA",
+              "TECHXPLO",
+              "GOOGLE",
+              "GITHUB",
               "MICROSOFT",
-              "APPLE AUTHORISED",
-              "GAUTENG EDU",
-              "SANDTON SME",
-              "JOZI CREATIVE CO.",
-              "LIMPOPO ACADEMY",
+              "OPENAI",
+              "CANVA",
+              "TECHXPLO",
             ].map((c, i) => (
               <span
                 key={i}
@@ -207,6 +264,86 @@ function Index() {
               >
                 {c}
               </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* About */}
+      <section id="about" className="py-24 px-6 scroll-mt-20">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-16 gap-6">
+            <div>
+              <h2 className="font-display text-4xl md:text-5xl font-bold uppercase tracking-tight">
+                About Us
+              </h2>
+              <p className="text-stone-500 font-mono text-xs mt-3 tracking-widest">[ OUR STORY ]</p>
+            </div>
+            <div className="hidden md:block h-px bg-brand-border flex-grow mx-12 mb-4" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-16">
+            <div>
+              <p className="text-stone-300 md:text-lg leading-relaxed mb-6">
+                TechXplo is a technology consultancy focused on bridging the gap between industry
+                needs and cutting-edge solutions. We achieve this by integrating seasoned
+                professionals into real-world projects within the workspace.
+              </p>
+              <p className="text-stone-400 leading-relaxed">
+                We are a thriving community of innovators driving meaningful impact through
+                technology. At the core of everything we do are the values that guide our mission
+                and shape our approach.
+              </p>
+            </div>
+            <div className="md:border-l border-brand-border md:pl-12">
+              <blockquote className="font-display text-xl md:text-3xl font-bold italic text-brand-accent leading-tight">
+                "Our mission is to empower the next generation of tech innovators."
+              </blockquote>
+              <div className="mt-6 space-y-4">
+                {[
+                  {
+                    label: "Inclusion & Diversity",
+                    desc: "We embrace diversity and create an inclusive space for everyone to thrive.",
+                  },
+                  {
+                    label: "Constant Innovation",
+                    desc: "We're dedicated to fostering talent, creativity, and meaningful connections.",
+                  },
+                  {
+                    label: "Servant Leadership",
+                    desc: "We lead through service, putting our community's needs first to empower.",
+                  },
+                ].map((p) => (
+                  <div key={p.label}>
+                    <div className="text-sm font-mono font-bold text-white uppercase tracking-widest">
+                      {p.label}
+                    </div>
+                    <div className="text-stone-400 text-sm mt-1">{p.desc}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 border-t border-brand-border pt-12">
+            {[
+              {
+                v: "Innovation",
+                d: "We embrace creativity and push boundaries to spark new ideas.",
+              },
+              { v: "Collaboration", d: "Success is built on teamwork and diverse perspectives." },
+              { v: "Growth", d: "Continuous personal and professional learning." },
+              { v: "Impact", d: "Creating meaningful, sustainable change." },
+            ].map((val) => (
+              <div
+                key={val.v}
+                className="text-center p-4 md:p-6 border border-brand-border bg-brand-card/40 break-words"
+              >
+                <div className="font-display text-lg md:text-xl font-bold text-brand-accent uppercase mb-2">
+                  {val.v}
+                </div>
+                <div className="text-stone-400 text-xs md:text-sm">{val.d}</div>
+              </div>
             ))}
           </div>
         </div>
@@ -225,7 +362,10 @@ function Index() {
               </p>
             </div>
             <div className="hidden md:block h-px bg-brand-border flex-grow mx-12 mb-4" />
-            <a href="#contact" className="group flex items-center gap-3 text-xs font-mono uppercase tracking-widest">
+            <a
+              href="#contact"
+              className="group flex items-center gap-3 text-xs font-mono uppercase tracking-widest"
+            >
               Brief Our Team
               <span className="size-8 border border-brand-border flex items-center justify-center group-hover:border-brand-accent group-hover:text-brand-accent transition-colors">
                 →
@@ -246,7 +386,10 @@ function Index() {
                 <p className="text-stone-400 text-sm leading-relaxed mb-8">{s.desc}</p>
                 <ul className="space-y-3">
                   {s.bullets.map((b) => (
-                    <li key={b} className="flex items-center gap-2 text-[11px] font-mono text-stone-500 tracking-widest">
+                    <li
+                      key={b}
+                      className="flex items-center gap-2 text-[11px] font-mono text-stone-500 tracking-widest"
+                    >
                       <span className="size-1 bg-brand-accent" /> {b}
                     </li>
                   ))}
@@ -258,28 +401,39 @@ function Index() {
       </section>
 
       {/* Partner blocks */}
-      <section id="partners" className="grid lg:grid-cols-2 border-y border-brand-border scroll-mt-20">
+      <section
+        id="partners"
+        className="grid lg:grid-cols-2 border-y border-brand-border scroll-mt-20"
+      >
         <div className="border-b lg:border-b-0 lg:border-r border-brand-border p-12 lg:p-20 flex flex-col justify-center">
           <span className="font-mono text-[10px] text-brand-accent uppercase tracking-[0.4em] mb-6">
             // PARTNER 001
           </span>
           <h3 className="font-display text-3xl md:text-4xl font-bold uppercase mb-6 tracking-tight">
-            Microsoft Partner
+            Google & GitHub
           </h3>
           <p className="text-stone-400 mb-8 max-w-md leading-relaxed">
-            MooreTech is a certified Microsoft partner. Our team delivers tailored consulting,
-            seamless implementation and ongoing support — so your business gets the full value of
-            Microsoft 365, Azure and the modern workplace stack.
+            TechXplo proudly collaborates with industry giants like Google and GitHub, leveraging
+            their platforms to build scalable, secure, and innovative software solutions for our
+            clients across South Africa.
           </p>
           <ul className="space-y-3 mb-8">
-            {["EXPERT CONSULTING", "SEAMLESS IMPLEMENTATION", "ONGOING MANAGED SUPPORT"].map((b) => (
-              <li key={b} className="flex items-center gap-3 text-[11px] font-mono text-stone-500 tracking-widest">
-                <span className="size-1 bg-brand-accent" /> {b}
-              </li>
-            ))}
+            {["CLOUD PLATFORMS & TOOLS", "DEVELOPER ECOSYSTEM", "SCALABLE INFRASTRUCTURE"].map(
+              (b) => (
+                <li
+                  key={b}
+                  className="flex items-center gap-3 text-[11px] font-mono text-stone-500 tracking-widest"
+                >
+                  <span className="size-1 bg-brand-accent" /> {b}
+                </li>
+              ),
+            )}
           </ul>
-          <a href="#contact" className="text-xs font-mono uppercase tracking-widest text-brand-accent hover:underline">
-            Start a Microsoft project →
+          <a
+            href="#contact"
+            className="text-xs font-mono uppercase tracking-widest text-brand-accent hover:underline"
+          >
+            Partner with us →
           </a>
         </div>
         <div className="p-12 lg:p-20 flex flex-col justify-center bg-brand-card/40">
@@ -287,22 +441,30 @@ function Index() {
             // PARTNER 002
           </span>
           <h3 className="font-display text-3xl md:text-4xl font-bold uppercase mb-6 tracking-tight">
-            Rectron Distribution
+            Microsoft & OpenAI
           </h3>
           <p className="text-stone-400 mb-8 max-w-md leading-relaxed">
-            Through our Rectron partnership we extend distribution reach, integrate complementary
-            services for resellers, and run joint go-to-market — solidifying access to South
-            Africa's leading ICT supply chain.
+            Through our collaboration with Microsoft and OpenAI, TechXplo delivers AI-enabled
+            services, intelligent automation, and cutting-edge solutions that drive real business
+            transformation.
           </p>
           <ul className="space-y-3 mb-8">
-            {["EXPANDED RESELLER NETWORK", "INTEGRATED SERVICE STACK", "JOINT GTM & TRAINING"].map((b) => (
-              <li key={b} className="flex items-center gap-3 text-[11px] font-mono text-stone-500 tracking-widest">
-                <span className="size-1 bg-brand-accent" /> {b}
-              </li>
-            ))}
+            {["AI & MACHINE LEARNING", "INTELLIGENT AUTOMATION", "ENTERPRISE INTEGRATION"].map(
+              (b) => (
+                <li
+                  key={b}
+                  className="flex items-center gap-3 text-[11px] font-mono text-stone-500 tracking-widest"
+                >
+                  <span className="size-1 bg-brand-accent" /> {b}
+                </li>
+              ),
+            )}
           </ul>
-          <a href="#contact" className="text-xs font-mono uppercase tracking-widest text-brand-accent hover:underline">
-            Talk procurement →
+          <a
+            href="#contact"
+            className="text-xs font-mono uppercase tracking-widest text-brand-accent hover:underline"
+          >
+            Explore AI solutions →
           </a>
         </div>
       </section>
@@ -323,15 +485,15 @@ function Index() {
             <div className="absolute inset-0 flex items-center px-8 md:px-12">
               <div className="max-w-xl">
                 <div className="text-brand-accent font-mono text-xs mb-4 tracking-widest">
-                  CASE STUDY // 042
+                  CASE STUDY // 001
                 </div>
                 <h3 className="text-3xl md:text-4xl font-display font-bold uppercase mb-6 tracking-tight">
-                  Fleet rollout for a Gauteng creative studio
+                  Digital transformation for a Johannesburg enterprise
                 </h3>
                 <p className="text-stone-300 text-sm md:text-base mb-8 leading-relaxed">
-                  MooreTech procured, configured and deployed 64 Mac workstations with Microsoft
-                  365 licensing across two Johannesburg offices — cutting onboarding time by 38%
-                  and standing up managed support inside a week.
+                  TechXplo modernized legacy systems for a leading Johannesburg enterprise —
+                  migrating core operations to the cloud, deploying custom software solutions, and
+                  reducing operational overhead by 40% within the first quarter.
                 </p>
                 <a
                   href="#contact"
@@ -356,15 +518,15 @@ function Index() {
               Open a line.
             </h2>
             <p className="text-stone-400 leading-relaxed max-w-md">
-              Briefs, quotes, support contracts. We respond inside one business day from our
-              Sandton operations centre.
+              Briefs, quotes, project inquiries. We respond inside one business day from our
+              Johannesburg operations centre.
             </p>
           </div>
           <div className="lg:col-span-7 grid sm:grid-cols-2 gap-px bg-brand-border border border-brand-border">
             {[
-              { l: "Phone", v: "+27 74 964 1235", href: "tel:+27749641235" },
-              { l: "Email", v: "info@mooretech.co.za", href: "mailto:info@mooretech.co.za" },
-              { l: "Address", v: "5 Chaplin Road, Illovo, Sandton" },
+              { l: "Phone", v: "+27 67 853 0148", href: "tel:+27678530148" },
+              { l: "Email", v: "admin@techxplo.co.za", href: "mailto:admin@techxplo.co.za" },
+              { l: "Address", v: "Johannesburg, South Africa" },
               { l: "Hours", v: "Mon–Fri · 09:00 – 18:00 SAST" },
             ].map((c) => (
               <div key={c.l} className="bg-brand-bg p-8">
@@ -372,7 +534,10 @@ function Index() {
                   {c.l}
                 </div>
                 {c.href ? (
-                  <a href={c.href} className="text-lg font-display font-bold hover:text-brand-accent transition-colors break-words">
+                  <a
+                    href={c.href}
+                    className="text-lg font-display font-bold hover:text-brand-accent transition-colors break-words"
+                  >
                     {c.v}
                   </a>
                 ) : (
@@ -393,34 +558,80 @@ function Index() {
                 <div className="size-3 bg-black rotate-45" />
               </div>
               <span className="font-display text-lg font-bold tracking-tight uppercase">
-                Moore<span className="text-brand-accent">Tech</span>
+                Tech<span className="text-brand-accent">Xplo</span>
               </span>
             </div>
             <p className="text-stone-500 text-xs font-mono uppercase leading-loose tracking-wider">
-              EM Enterprise T/A Moore Tech Consulting. Sandton · Johannesburg · South Africa.
+              TechXplo. Johannesburg · South Africa.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-20">
             <div>
-              <div className="text-xs font-mono text-white mb-6 uppercase tracking-widest">Directory</div>
+              <div className="text-xs font-mono text-white mb-6 uppercase tracking-widest">
+                Directory
+              </div>
               <ul className="space-y-4">
-                <li><a href="#services" className="text-stone-500 text-xs font-mono hover:text-brand-accent uppercase tracking-widest">Services</a></li>
-                <li><a href="#partners" className="text-stone-500 text-xs font-mono hover:text-brand-accent uppercase tracking-widest">Partners</a></li>
-                <li><a href="#case" className="text-stone-500 text-xs font-mono hover:text-brand-accent uppercase tracking-widest">Work</a></li>
+                <li>
+                  <a
+                    href="#services"
+                    className="text-stone-500 text-xs font-mono hover:text-brand-accent uppercase tracking-widest"
+                  >
+                    Services
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#partners"
+                    className="text-stone-500 text-xs font-mono hover:text-brand-accent uppercase tracking-widest"
+                  >
+                    Partners
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#case"
+                    className="text-stone-500 text-xs font-mono hover:text-brand-accent uppercase tracking-widest"
+                  >
+                    Work
+                  </a>
+                </li>
               </ul>
             </div>
             <div>
-              <div className="text-xs font-mono text-white mb-6 uppercase tracking-widest">Contact</div>
+              <div className="text-xs font-mono text-white mb-6 uppercase tracking-widest">
+                Contact
+              </div>
               <ul className="space-y-4">
-                <li><a href="mailto:info@mooretech.co.za" className="text-stone-500 text-xs font-mono hover:text-brand-accent uppercase tracking-widest">Email</a></li>
-                <li><a href="tel:+27749641235" className="text-stone-500 text-xs font-mono hover:text-brand-accent uppercase tracking-widest">Phone</a></li>
-                <li><a href="#contact" className="text-stone-500 text-xs font-mono hover:text-brand-accent uppercase tracking-widest">Visit</a></li>
+                <li>
+                  <a
+                    href="mailto:admin@techxplo.co.za"
+                    className="text-stone-500 text-xs font-mono hover:text-brand-accent uppercase tracking-widest"
+                  >
+                    Email
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="tel:+27678530148"
+                    className="text-stone-500 text-xs font-mono hover:text-brand-accent uppercase tracking-widest"
+                  >
+                    Phone
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#contact"
+                    className="text-stone-500 text-xs font-mono hover:text-brand-accent uppercase tracking-widest"
+                  >
+                    Visit
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
         </div>
         <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-brand-border flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-mono text-stone-600 tracking-widest">
-          <span>© 2026 EM ENTERPRISE (PTY) LTD T/A MOORE TECH CONSULTING.</span>
+          <span>© 2026 TechXplo. All rights reserved.</span>
           <span>V2026.01 // STABLE</span>
         </div>
       </footer>
