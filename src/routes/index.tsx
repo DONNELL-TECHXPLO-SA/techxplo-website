@@ -46,6 +46,27 @@ const phases = [
   },
 ];
 
+const testimonials = [
+  {
+    quote:
+      "TechXplo didn't just deliver a product — they transformed how we think about technology. Our efficiency gains paid for the project in under three months.",
+    author: "CTO",
+    org: "Johannesburg Financial Services",
+  },
+  {
+    quote:
+      "Working with TechXplo felt like an extension of our own team. They understood our mission from day one and built something we're truly proud of.",
+    author: "Founder & CEO",
+    org: "SA HealthTech Startup",
+  },
+  {
+    quote:
+      "The pro-bono support TechXplo provided helped us reach 3× more communities. They genuinely care about impact, not just contracts.",
+    author: "Director of Operations",
+    org: "Cape Town NPO",
+  },
+];
+
 function MobileCarousel() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ align: "start", loop: false });
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -98,6 +119,69 @@ function MobileCarousel() {
                 : "bg-stone-700 hover:bg-stone-500"
             }`}
             aria-label={`Go to slide ${i + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MobileTestimonialCarousel() {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ align: "start", loop: false });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    setScrollSnaps(emblaApi.scrollSnapList());
+    emblaApi.on("select", onSelect);
+    onSelect();
+  }, [emblaApi, onSelect]);
+
+  return (
+    <div className="md:hidden">
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex" style={{ touchAction: "pan-y" }}>
+          {testimonials.map((t) => (
+            <div
+              key={t.author}
+              className="min-w-0 shrink-0 grow-0 basis-[85%] pr-4 last:pr-0"
+            >
+              <div className="border border-brand-border p-8 bg-brand-bg select-none h-full">
+                <span className="text-6xl font-display font-bold text-brand-accent/10 block leading-none mb-4">
+                  "
+                </span>
+                <p className="text-stone-300 text-sm leading-relaxed mb-8">
+                  "{t.quote}"
+                </p>
+                <div className="border-t border-brand-border pt-4">
+                  <div className="text-sm font-display font-bold uppercase">{t.author}</div>
+                  <div className="text-[9px] font-mono text-stone-500 mt-1 tracking-widest">
+                    {t.org}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex justify-center gap-2 mt-6">
+        {scrollSnaps.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => emblaApi?.scrollTo(i)}
+            className={`size-2 rounded-full transition-all cursor-pointer ${
+              i === selectedIndex
+                ? "bg-brand-accent w-6"
+                : "bg-stone-700 hover:bg-stone-500"
+            }`}
+            aria-label={`Go to testimonial ${i + 1}`}
           />
         ))}
       </div>
@@ -526,27 +610,8 @@ function Index() {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                quote:
-                  "TechXplo didn't just deliver a product — they transformed how we think about technology. Our efficiency gains paid for the project in under three months.",
-                author: "CTO",
-                org: "Johannesburg Financial Services",
-              },
-              {
-                quote:
-                  "Working with TechXplo felt like an extension of our own team. They understood our mission from day one and built something we're truly proud of.",
-                author: "Founder & CEO",
-                org: "SA HealthTech Startup",
-              },
-              {
-                quote:
-                  "The pro-bono support TechXplo provided helped us reach 3× more communities. They genuinely care about impact, not just contracts.",
-                author: "Director of Operations",
-                org: "Cape Town NPO",
-              },
-            ].map((t) => (
+          <div className="hidden md:grid md:grid-cols-3 gap-6">
+            {testimonials.map((t) => (
               <div
                 key={t.author}
                 className="border border-brand-border p-8 md:p-10 bg-brand-bg relative"
@@ -566,6 +631,8 @@ function Index() {
               </div>
             ))}
           </div>
+
+          <MobileTestimonialCarousel />
         </div>
       </section>
 
