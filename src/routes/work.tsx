@@ -1,47 +1,24 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import caseStudy from "@/assets/case-study.jpg";
 
-export const Route = createFileRoute("/contact")({
-  component: Contact,
+export const Route = createFileRoute("/work")({
+  component: Work,
   head: () => ({
     meta: [
-      { title: "Contact — TechXplo" },
+      { title: "Our Work — TechXplo" },
       {
         name: "description",
         content:
-          "Get in touch with TechXplo. Briefs, quotes, project inquiries. We respond inside one business day.",
+          "Explore TechXplo's case studies. Digital transformation, cloud migration, and custom software solutions for Johannesburg enterprises.",
       },
     ],
   }),
 });
 
-const contactSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address"),
-  subject: z.string().min(5, "Subject must be at least 5 characters"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
-});
-
-function Contact() {
+function Work() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
-  const form = useForm<z.infer<typeof contactSchema>>({
-    resolver: zodResolver(contactSchema),
-    defaultValues: { name: "", email: "", subject: "", message: "" },
-  });
-
-  function onSubmit(values: z.infer<typeof contactSchema>) {
-    console.log(values);
-    setSubmitted(true);
-  }
 
   return (
     <div className="min-h-screen bg-brand-bg text-white selection:bg-brand-accent selection:text-black">
@@ -77,13 +54,13 @@ function Contact() {
             </Link>
             <Link
               to="/work"
-              className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
+              className="text-xs font-mono tracking-widest uppercase text-brand-accent transition-colors"
             >
               Work
             </Link>
             <Link
               to="/contact"
-              className="text-xs font-mono tracking-widest uppercase text-brand-accent transition-colors"
+              className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
             >
               Contact
             </Link>
@@ -143,14 +120,14 @@ function Contact() {
               <Link
                 to="/work"
                 onClick={() => setMobileOpen(false)}
-                className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
+                className="text-xs font-mono tracking-widest uppercase text-brand-accent transition-colors"
               >
                 Work
               </Link>
               <Link
                 to="/contact"
                 onClick={() => setMobileOpen(false)}
-                className="text-xs font-mono tracking-widest uppercase text-brand-accent transition-colors"
+                className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
               >
                 Contact
               </Link>
@@ -166,145 +143,40 @@ function Contact() {
         )}
       </nav>
 
-      {/* Contact */}
-      <section className="px-6 py-16 md:py-24">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12">
-          <div className="lg:col-span-5">
-            <span className="font-mono text-[10px] text-brand-accent uppercase tracking-[0.4em]">
-              // CONTACT
-            </span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold uppercase tracking-tight mt-4 mb-6">
-              Open a line.
-            </h2>
-            <p className="text-stone-400 leading-relaxed max-w-md mb-12">
-              Briefs, quotes, project inquiries. We respond inside one business day from our
-              Johannesburg operations centre.
-            </p>
-            <div className="grid sm:grid-cols-2 gap-px bg-brand-border border border-brand-border">
-              {[
-                { l: "Phone", v: "+27 67 853 0148", href: "tel:+27678530148" },
-                { l: "Email", v: "admin@techxplo.co.za", href: "mailto:admin@techxplo.co.za" },
-                { l: "Address", v: "Johannesburg, South Africa" },
-                { l: "Hours", v: "Mon–Fri · 09:00 – 18:00 SAST" },
-              ].map((c) => (
-                <div key={c.l} className="bg-brand-bg p-6">
-                  <div className="text-[10px] font-mono uppercase tracking-[0.3em] text-stone-500 mb-3">
-                    {c.l}
-                  </div>
-                  {c.href ? (
-                    <a
-                      href={c.href}
-                      className="text-base font-display font-bold hover:text-brand-accent transition-colors break-words"
-                    >
-                      {c.v}
-                    </a>
-                  ) : (
-                    <p className="text-base font-display font-bold">{c.v}</p>
-                  )}
+      {/* Case study / Showcase */}
+      <section id="case" className="px-6 py-16 md:py-24 scroll-mt-20">
+        <div className="max-w-7xl mx-auto">
+          <div className="relative aspect-[4/3] md:aspect-[21/9] border border-brand-border overflow-hidden">
+            <img
+              src={caseStudy}
+              alt="Dark data centre with green accent lighting"
+              loading="lazy"
+              width={1920}
+              height={820}
+              className="absolute inset-0 w-full h-full object-cover opacity-50"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-brand-bg via-brand-bg/70 to-transparent" />
+            <div className="absolute inset-0 flex items-center px-8 md:px-12">
+              <div className="max-w-xl">
+                <div className="text-brand-accent font-mono text-xs mb-4 tracking-widest">
+                  CASE STUDY // 001
                 </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="lg:col-span-7">
-            {submitted ? (
-              <div className="border border-brand-accent bg-brand-card p-10 text-center">
-                <div className="text-5xl mb-4 text-brand-accent">✓</div>
-                <h3 className="font-display text-2xl font-bold uppercase mb-2">Message received</h3>
-                <p className="text-stone-400">We'll get back to you within one business day.</p>
+                <h3 className="text-3xl md:text-4xl font-display font-bold uppercase mb-6 tracking-tight">
+                  Digital transformation for a Johannesburg enterprise
+                </h3>
+                <p className="text-stone-300 text-sm md:text-base mb-8 leading-relaxed">
+                  TechXplo modernized legacy systems for a leading Johannesburg enterprise —
+                  migrating core operations to the cloud, deploying custom software solutions, and
+                  reducing operational overhead by 40% within the first quarter.
+                </p>
+                <Link
+                  to="/contact"
+                  className="inline-block px-7 py-3 bg-brand-accent text-black font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-opacity"
+                >
+                  Brief a similar project
+                </Link>
               </div>
-            ) : (
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="text-xs font-mono uppercase tracking-[0.3em] text-stone-500 mb-2">
-                          Name
-                        </div>
-                        <FormControl>
-                          <Input
-                            placeholder="Your name"
-                            className="bg-brand-card border-brand-border text-white placeholder:text-stone-600 px-4 py-3 h-auto text-sm"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage className="text-xs text-red-400" />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="text-xs font-mono uppercase tracking-[0.3em] text-stone-500 mb-2">
-                          Email
-                        </div>
-                        <FormControl>
-                          <Input
-                            placeholder="you@example.com"
-                            className="bg-brand-card border-brand-border text-white placeholder:text-stone-600 px-4 py-3 h-auto text-sm"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage className="text-xs text-red-400" />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="subject"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="text-xs font-mono uppercase tracking-[0.3em] text-stone-500 mb-2">
-                          Subject
-                        </div>
-                        <FormControl>
-                          <Input
-                            placeholder="What is this regarding?"
-                            className="bg-brand-card border-brand-border text-white placeholder:text-stone-600 px-4 py-3 h-auto text-sm"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage className="text-xs text-red-400" />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="message"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="text-xs font-mono uppercase tracking-[0.3em] text-stone-500 mb-2">
-                          Message
-                        </div>
-                        <FormControl>
-                          <Textarea
-                            placeholder="Tell us about your project..."
-                            className="bg-brand-card border-brand-border text-white placeholder:text-stone-600 px-4 py-3 h-auto text-sm min-h-[140px]"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage className="text-xs text-red-400" />
-                      </FormItem>
-                    )}
-                  />
-
-                  <button
-                    type="submit"
-                    className="px-7 py-3 bg-brand-accent text-black font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-opacity cursor-pointer"
-                  >
-                    Send Message
-                  </button>
-                </form>
-              </Form>
-            )}
+            </div>
           </div>
         </div>
       </section>
@@ -331,14 +203,6 @@ function Contact() {
                 Directory
               </div>
               <ul className="space-y-4">
-                <li>
-                  <Link
-                    to="/about"
-                    className="text-stone-500 text-xs font-mono hover:text-brand-accent uppercase tracking-widest"
-                  >
-                    About
-                  </Link>
-                </li>
                 <li>
                   <Link
                     to="/services"
