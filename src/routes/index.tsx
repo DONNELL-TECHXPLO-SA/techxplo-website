@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
-import caseStudy from "@/assets/case-study.jpg";
+import heroBoard from "@/assets/hero-board.jpg";
 
 function HeroVideo() {
   return (
@@ -15,6 +15,60 @@ function HeroVideo() {
     >
       <source src="/videos/hero-bg.mp4" type="video/mp4" />
     </video>
+  );
+}
+
+function useCountUp(target: number) {
+  const [count, setCount] = useState(0);
+  const startedRef = useRef(false);
+
+  useEffect(() => {
+    if (target <= 0) {
+      setCount(0);
+      return;
+    }
+
+    if (startedRef.current) return;
+    startedRef.current = true;
+
+    setCount(0);
+
+    const duration = 1200;
+    const stepCount = Math.max(Math.ceil(duration / 16), target);
+    const increment = target / stepCount;
+    const intervalMs = duration / stepCount;
+
+    let current = 0;
+    const timer = window.setInterval(() => {
+      current += increment;
+
+      if (current >= target) {
+        setCount(target);
+        window.clearInterval(timer);
+        return;
+      }
+
+      setCount(Math.round(current));
+    }, intervalMs);
+
+    return () => window.clearInterval(timer);
+  }, [target]);
+
+  return count;
+}
+
+function AnimatedStat({ label, value, suffix }: { label: string; value: number; suffix: string }) {
+  const count = useCountUp(value);
+  return (
+    <div className="text-center">
+      <div className="text-4xl md:text-5xl font-display font-bold text-brand-accent">
+        {count}
+        <span className="text-white">{suffix}</span>
+      </div>
+      <div className="text-[10px] font-mono uppercase tracking-[0.3em] text-stone-500 mt-2">
+        {label}
+      </div>
+    </div>
   );
 }
 
@@ -38,45 +92,6 @@ export const Route = createFileRoute("/")({
   }),
 });
 
-const services = [
-  {
-    n: "01",
-    title: "Digital Transformation",
-    desc: "TechXplo helps businesses modernize legacy systems with innovative digital transformation solutions that enhance efficiency and scalability.",
-    bullets: ["LEGACY SYSTEM MODERNIZATION", "SCALABLE SOLUTIONS"],
-  },
-  {
-    n: "02",
-    title: "Software Development",
-    desc: "TechXplo delivers custom solutions tailored to business needs, streamlining workflows, optimizing customer experiences, and enabling agile decision-making.",
-    bullets: ["CUSTOM SOFTWARE", "WORKFLOW OPTIMIZATION"],
-  },
-  {
-    n: "03",
-    title: "AI Enabled Services",
-    desc: "Harness the power of artificial intelligence to automate processes, gain insights, and create intelligent applications that drive business growth.",
-    bullets: ["AI AUTOMATION", "INTELLIGENT APPS"],
-  },
-  {
-    n: "04",
-    title: "Mobile Application Development",
-    desc: "Build powerful, user-friendly mobile applications for iOS and Android that engage users and extend your business reach.",
-    bullets: ["iOS & ANDROID APPS", "USER-CENTRIC DESIGN"],
-  },
-  {
-    n: "05",
-    title: "Tech-supported NPO Projects",
-    desc: "TechXplo offers web development and app solutions for NPOs at no cost or low-bono, helping to expand their impact and reach more communities.",
-    bullets: ["PRO-BONO SOLUTIONS", "COMMUNITY IMPACT"],
-  },
-  {
-    n: "06",
-    title: "Automation & Data Solutions",
-    desc: "Streamline operations with intelligent automation and data-driven solutions that turn raw information into actionable business intelligence.",
-    bullets: ["PROCESS AUTOMATION", "DATA INTELLIGENCE"],
-  },
-];
-
 function Index() {
   const [mobileOpen, setMobileOpen] = useState(false);
   return (
@@ -93,30 +108,30 @@ function Index() {
             </span>
           </a>
           <div className="hidden md:flex items-center gap-10">
-            <a
-              href="#about"
+            <Link
+              to="/about"
               className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
             >
               About
-            </a>
-            <a
-              href="#services"
+            </Link>
+            <Link
+              to="/services"
               className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
             >
               Services
-            </a>
-            <a
-              href="#partners"
+            </Link>
+            <Link
+              to="/partners"
               className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
             >
               Partners
-            </a>
-            <a
-              href="#case"
+            </Link>
+            <Link
+              to="/work"
               className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
             >
               Work
-            </a>
+            </Link>
             <Link
               to="/contact"
               className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
@@ -155,16 +170,34 @@ function Index() {
         {mobileOpen && (
           <div className="md:hidden border-t border-brand-border bg-brand-bg/95 backdrop-blur-md">
             <div className="px-6 py-6 flex flex-col gap-6">
-              {["about", "services", "partners", "case"].map((section) => (
-                <a
-                  key={section}
-                  href={`#${section}`}
-                  onClick={() => setMobileOpen(false)}
-                  className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
-                >
-                  {section === "case" ? "Work" : section.charAt(0).toUpperCase() + section.slice(1)}
-                </a>
-              ))}
+              <Link
+                to="/about"
+                onClick={() => setMobileOpen(false)}
+                className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
+              >
+                About
+              </Link>
+              <Link
+                to="/services"
+                onClick={() => setMobileOpen(false)}
+                className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
+              >
+                Services
+              </Link>
+              <Link
+                to="/partners"
+                onClick={() => setMobileOpen(false)}
+                className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
+              >
+                Partners
+              </Link>
+              <Link
+                to="/work"
+                onClick={() => setMobileOpen(false)}
+                className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
+              >
+                Work
+              </Link>
               <Link
                 to="/contact"
                 onClick={() => setMobileOpen(false)}
@@ -185,349 +218,321 @@ function Index() {
       </nav>
 
       {/* Hero */}
-      <section id="top" className="relative pt-16 md:pt-20 pb-16 md:pb-20 px-6 overflow-hidden">
+      <section
+        id="top"
+        className="relative min-h-[90vh] flex items-center pt-16 md:pt-20 pb-16 md:pb-20 px-6 overflow-hidden"
+      >
         <div className="absolute inset-0">
           <HeroVideo />
         </div>
-        <div className="absolute inset-0 bg-black/60" />
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid grid-cols-12 gap-8 items-end">
-            <div className="col-span-12">
-              <div className="inline-flex items-center gap-3 px-3 py-1 border border-brand-border rounded-full mb-8">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-accent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-brand-bg" />
+        <div className="max-w-7xl mx-auto relative z-10 w-full">
+          <div className="max-w-4xl">
+            <div className="inline-flex items-center gap-3 px-4 py-1.5 border border-brand-border rounded-full mb-8">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-accent" />
+              </span>
+              <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-stone-400">
+                TechXplo // Johannesburg, ZA
+              </span>
+            </div>
+            <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.9] tracking-tighter mb-6">
+              EXPERIENCE THE <br />
+              <span
+                className="text-transparent"
+                style={{ WebkitTextStroke: "1px rgba(255,255,255,0.25)" }}
+              >
+                REAL
+              </span>{" "}
+              <br />
+              INNOVATION.
+            </h1>
+            <p className="max-w-2xl text-stone-400 text-lg md:text-xl leading-relaxed mb-10">
+              We are a Johannesburg-based technology consultancy that partners with purpose-driven
+              organizations to build custom software, drive digital transformation, and create
+              intelligent solutions that make a real impact.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Link
+                to="/contact"
+                className="relative group px-8 py-4 bg-brand-accent text-black font-bold text-xs uppercase tracking-widest overflow-hidden transition-all"
+              >
+                <span className="relative z-10">Start Your Project</span>
+                <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+              </Link>
+              <Link
+                to="/about"
+                className="group flex items-center gap-3 px-8 py-4 border border-brand-border text-xs font-mono uppercase tracking-widest hover:border-brand-accent hover:text-brand-accent transition-all"
+              >
+                Our Story
+                <span className="size-6 flex items-center justify-center group-hover:translate-x-1 transition-transform">
+                  →
                 </span>
-                <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-stone-400">
-                  TechXplo // Johannesburg, ZA
-                </span>
-              </div>
-              <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.9] tracking-tighter mb-10">
-                EXPERIENCE THE <br />
-                <span
-                  className="text-transparent"
-                  style={{ WebkitTextStroke: "1px rgba(255,255,255,0.25)" }}
-                >
-                  REAL
-                </span>{" "}
-                <br />
-                INNOVATION.
-              </h1>
-              <p className="max-w-xl text-stone-400 text-lg leading-relaxed mb-10">
-                TechXplo delivers top-tier software solutions designed to streamline operations,
-                boost efficiency, and drive innovation for your business — from custom development
-                to digital transformation and AI-enabled services across South Africa.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Link
-                  to="/contact"
-                  className="px-7 py-3 bg-brand-accent text-black font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-opacity"
-                >
-                  Get a Quote
-                </Link>
-                <a
-                  href="#services"
-                  className="px-7 py-3 border border-brand-border text-xs font-mono uppercase tracking-widest hover:border-brand-accent hover:text-brand-accent transition-colors"
-                >
-                  Explore Services
-                </a>
-              </div>
+              </Link>
+            </div>
+          </div>
+
+          {/* Scroll indicator */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+            <span className="text-[8px] font-mono uppercase tracking-[0.4em] text-stone-600">
+              Scroll
+            </span>
+            <div className="size-5 border-2 border-stone-600 rounded-full flex items-center justify-center">
+              <div className="size-1 bg-stone-500 rounded-full animate-bounce" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats / Client strip */}
+      {/* Stats row */}
       <section className="border-y border-brand-border bg-brand-card/30">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4">
-          {[
-            { l: "Members", v: "30", a: "+" },
-            { l: "Partners", v: "5", a: "+" },
-            { l: "Social Following", v: "700", a: "+" },
-            { l: "Projects Delivered", v: "50", a: "+" },
-          ].map((s, i) => (
-            <div
-              key={s.l}
-              className={`p-8 border-r border-brand-border even:border-r-0 md:even:border-r ${i === 3 ? "md:border-r-0" : ""} ${i < 2 ? "border-b md:border-b-0 border-brand-border" : ""}`}
-            >
-              <div className="text-xs font-mono text-stone-500 mb-2 uppercase tracking-widest">
-                {s.l}
-              </div>
-              <div className="text-3xl md:text-4xl font-display font-bold">
-                {s.v}
-                <span className="text-brand-accent">{s.a}</span>
-              </div>
-            </div>
-          ))}
+        <div className="max-w-7xl mx-auto px-6 py-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <AnimatedStat label="Community Members" value={30} suffix="+" />
+            <AnimatedStat label="Global Partners" value={5} suffix="+" />
+            <AnimatedStat label="Social Following" value={700} suffix="+" />
+            <AnimatedStat label="Projects Delivered" value={50} suffix="+" />
+          </div>
         </div>
       </section>
 
-      {/* Client marquee */}
+      {/* Brand Marquee */}
       <section
         aria-label="Our clients"
-        className="border-b border-brand-border overflow-hidden py-8 bg-brand-bg"
+        className="border-b border-brand-border overflow-hidden py-10 bg-brand-bg"
       >
         <p className="text-center text-[10px] font-mono uppercase tracking-[0.4em] text-stone-500 mb-6">
           Trusted by industry leaders
         </p>
         <div className="overflow-hidden whitespace-nowrap px-8">
           <div className="inline-block animate-marquee">
-            {["GOOGLE", "GITHUB", "MICROSOFT", "OPENAI", "CANVA", "TECHXPLO"].map((c) => (
+            {["TRAINSURE", "52ND HOLDINGS", "SIHLOLA HOLDINGS", "MEDIA REIGN", "MONUMENTAL", "DELTA COACHES", "EASYCART"].map((c) => (
               <span
                 key={c}
-                className="inline-block font-display text-xl font-bold tracking-tighter text-stone-500"
+                className="inline-block font-display text-2xl font-bold tracking-tighter text-stone-600"
               >
                 {c}
-                <span className="mx-8 invisible">|</span>
+                <span className="mx-12 text-stone-700">✦</span>
               </span>
             ))}
-            {["GOOGLE", "GITHUB", "MICROSOFT", "OPENAI", "CANVA", "TECHXPLO"].map((c) => (
+            {["TRAINSURE", "52ND HOLDINGS", "SIHLOLA HOLDINGS", "MEDIA REIGN", "MONUMENTAL", "DELTA COACHES", "EASYCART"].map((c) => (
               <span
                 key={c}
-                className="inline-block font-display text-xl font-bold tracking-tighter text-stone-500"
+                className="inline-block font-display text-2xl font-bold tracking-tighter text-stone-600"
               >
                 {c}
-                <span className="mx-8 invisible">|</span>
+                <span className="mx-12 text-stone-700">✦</span>
               </span>
             ))}
           </div>
         </div>
       </section>
 
-      {/* About */}
-      <section id="about" className="py-16 md:py-24 px-6 scroll-mt-20">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-16 gap-6">
+      {/* Our Story */}
+      <section className="py-24 md:py-32 px-6 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-bg via-brand-card/20 to-brand-bg" />
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="font-display text-4xl md:text-5xl font-bold uppercase tracking-tight">
-                About Us
+              <span className="font-mono text-[10px] text-brand-accent uppercase tracking-[0.4em]">
+                // OUR STORY
+              </span>
+              <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tight mt-6 mb-8 leading-[1.05]">
+                Born in <span className="text-brand-accent">Johannesburg</span>
+                <br />
+                building for the world.
               </h2>
-              <p className="text-stone-500 font-mono text-xs mt-3 tracking-widest">[ OUR STORY ]</p>
+              <div className="space-y-5 text-stone-400 leading-relaxed">
+                <p>
+                  TechXplo started as a bold idea — that South African talent could compete on a
+                  global stage. We set out to build a technology consultancy that doesn't just
+                  follow trends but sets new standards for what's possible.
+                </p>
+                <p>
+                  Every project we take on is a partnership. We embed ourselves in your world,
+                  understand your challenges, and craft solutions that move the needle. From
+                  startups taking their first step to enterprises reimagining their future, we bring
+                  the same intensity, curiosity, and care.
+                </p>
+              </div>
+              <Link
+                to="/about"
+                className="group inline-flex items-center gap-3 mt-8 text-sm font-mono uppercase tracking-widest text-brand-accent hover:underline"
+              >
+                Read the full story
+                <span className="inline-block group-hover:translate-x-1 transition-transform">
+                  →
+                </span>
+              </Link>
             </div>
-            <div className="hidden md:block h-px bg-brand-border flex-grow mx-12 mb-4" />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-16">
-            <div>
-              <p className="text-stone-300 md:text-lg leading-relaxed mb-6">
-                TechXplo is a technology consultancy focused on bridging the gap between industry
-                needs and cutting-edge solutions. We achieve this by integrating seasoned
-                professionals into real-world projects within the workspace.
-              </p>
-              <p className="text-stone-400 leading-relaxed">
-                We are a thriving community of innovators driving meaningful impact through
-                technology. At the core of everything we do are the values that guide our mission
-                and shape our approach.
-              </p>
-            </div>
-            <div className="md:border-l border-brand-border md:pl-12">
-              <blockquote className="font-display text-xl md:text-3xl font-bold italic text-brand-accent leading-tight">
-                "Our mission is to empower the next generation of tech innovators."
-              </blockquote>
-              <div className="mt-6 space-y-4">
-                {[
-                  {
-                    label: "Inclusion & Diversity",
-                    desc: "We embrace diversity and create an inclusive space for everyone to thrive.",
-                  },
-                  {
-                    label: "Constant Innovation",
-                    desc: "We're dedicated to fostering talent, creativity, and meaningful connections.",
-                  },
-                  {
-                    label: "Servant Leadership",
-                    desc: "We lead through service, putting our community's needs first to empower.",
-                  },
-                ].map((p) => (
-                  <div key={p.label}>
-                    <div className="text-sm font-mono font-bold text-white uppercase tracking-widest">
-                      {p.label}
-                    </div>
-                    <div className="text-stone-400 text-sm mt-1">{p.desc}</div>
-                  </div>
-                ))}
+            <div className="relative">
+              <div className="aspect-[4/3] border border-brand-border overflow-hidden">
+                <img
+                  src={heroBoard}
+                  alt="TechXplo team at work"
+                  loading="lazy"
+                  className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-bg via-transparent to-transparent" />
+              </div>
+              <div className="absolute -bottom-4 -right-4 border border-brand-accent bg-brand-bg p-6 max-w-xs hidden md:block">
+                <div className="text-3xl font-display font-bold text-brand-accent">2024</div>
+                <div className="text-[10px] font-mono uppercase tracking-widest text-stone-500 mt-1">
+                  Founded in Johannesburg
+                </div>
               </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 border-t border-brand-border pt-12">
+      {/* How We Work */}
+      <section className="py-24 md:py-32 px-6 border-t border-brand-border">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-20">
+            <span className="font-mono text-[10px] text-brand-accent uppercase tracking-[0.4em]">
+              // METHODOLOGY
+            </span>
+            <h2 className="font-display text-4xl md:text-5xl font-bold uppercase tracking-tight mt-6 mb-4">
+              How We Build
+            </h2>
+            <p className="text-stone-500 max-w-xl mx-auto text-sm">
+              A proven process that moves from insight to impact — fast.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-px bg-brand-border">
             {[
               {
-                v: "Innovation",
-                d: "We embrace creativity and push boundaries to spark new ideas.",
+                step: "01",
+                title: "Discover",
+                desc: "We immerse ourselves in your world — your users, your data, your goals. No assumptions, just evidence.",
+                icon: "◐",
               },
-              { v: "Collaboration", d: "Success is built on teamwork and diverse perspectives." },
-              { v: "Growth", d: "Continuous personal and professional learning." },
-              { v: "Impact", d: "Creating meaningful, sustainable change." },
-            ].map((val) => (
+              {
+                step: "02",
+                title: "Design",
+                desc: "Architecture, UX, and system design that balances ambition with practicality. We blueprint before we build.",
+                icon: "◇",
+              },
+              {
+                step: "03",
+                title: "Build",
+                desc: "Agile sprints, continuous integration, and transparent progress. You see every commit, every milestone.",
+                icon: "▣",
+              },
+              {
+                step: "04",
+                title: "Scale",
+                desc: "Launch, monitor, iterate. We stay with you through deployment and beyond, ensuring your solution grows with you.",
+                icon: "⤴",
+              },
+            ].map((phase) => (
               <div
-                key={val.v}
-                className="text-center p-4 md:p-6 border border-brand-border bg-brand-card/40 break-words"
+                key={phase.step}
+                className="bg-brand-bg p-8 md:p-10 relative group hover:bg-brand-card transition-colors"
               >
-                <div className="font-display text-lg md:text-xl font-bold text-brand-accent uppercase mb-2">
-                  {val.v}
+                <div className="text-3xl mb-6 text-brand-accent/40 group-hover:text-brand-accent transition-colors">
+                  {phase.icon}
                 </div>
-                <div className="text-stone-400 text-xs md:text-sm">{val.d}</div>
+                <div className="text-[10px] font-mono text-brand-accent mb-3 tracking-widest">
+                  STEP {phase.step}
+                </div>
+                <h3 className="font-display text-xl font-bold uppercase mb-4">{phase.title}</h3>
+                <p className="text-stone-500 text-sm leading-relaxed">{phase.desc}</p>
+                <div className="mt-6 h-px w-0 group-hover:w-full bg-brand-accent transition-all duration-500" />
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Services */}
-      <section id="services" className="py-16 md:py-24 px-6 scroll-mt-20">
+      {/* Testimonials */}
+      <section className="py-24 md:py-32 px-6 border-t border-brand-border bg-brand-card/10">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-16 gap-6">
-            <div>
-              <h2 className="font-display text-4xl md:text-5xl font-bold uppercase tracking-tight">
-                What We Do
-              </h2>
-              <p className="text-stone-500 font-mono text-xs mt-3 tracking-widest">
-                [ CORE SERVICE DIRECTORY ]
-              </p>
-            </div>
-            <div className="hidden md:block h-px bg-brand-border flex-grow mx-12 mb-4" />
+          <div className="text-center mb-16">
+            <span className="font-mono text-[10px] text-brand-accent uppercase tracking-[0.4em]">
+              // TESTIMONIALS
+            </span>
+            <h2 className="font-display text-4xl md:text-5xl font-bold uppercase tracking-tight mt-6 mb-4">
+              What People Say
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                quote:
+                  "TechXplo didn't just deliver a product — they transformed how we think about technology. Our efficiency gains paid for the project in under three months.",
+                author: "CTO",
+                org: "Johannesburg Financial Services",
+              },
+              {
+                quote:
+                  "Working with TechXplo felt like an extension of our own team. They understood our mission from day one and built something we're truly proud of.",
+                author: "Founder & CEO",
+                org: "SA HealthTech Startup",
+              },
+              {
+                quote:
+                  "The pro-bono support TechXplo provided helped us reach 3× more communities. They genuinely care about impact, not just contracts.",
+                author: "Director of Operations",
+                org: "Cape Town NPO",
+              },
+            ].map((t) => (
+              <div
+                key={t.author}
+                className="border border-brand-border p-8 md:p-10 bg-brand-bg relative"
+              >
+                <span className="text-6xl font-display font-bold text-brand-accent/10 absolute top-4 right-6 leading-none">
+                  "
+                </span>
+                <p className="text-stone-300 text-sm leading-relaxed mb-8 relative z-10">
+                  "{t.quote}"
+                </p>
+                <div className="border-t border-brand-border pt-4">
+                  <div className="text-sm font-display font-bold uppercase">{t.author}</div>
+                  <div className="text-[9px] font-mono text-stone-500 mt-1 tracking-widest">
+                    {t.org}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="relative py-32 md:py-40 px-6 border-t border-brand-border overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-card/20 to-brand-bg" />
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <span className="font-mono text-[10px] text-brand-accent uppercase tracking-[0.4em]">
+            // LET'S BUILD
+          </span>
+          <h2 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold uppercase tracking-tight mt-8 mb-6 leading-[1.05]">
+            Ready to <span className="text-brand-accent">create</span> something
+            <br />
+            extraordinary?
+          </h2>
+          <p className="text-stone-400 max-w-xl mx-auto mb-10 text-sm md:text-base leading-relaxed">
+            Whether you're a startup with a bold vision or an enterprise ready to transform — let's
+            make it happen. One conversation can change everything.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
             <Link
               to="/contact"
-              className="group flex items-center gap-3 text-xs font-mono uppercase tracking-widest"
+              className="relative group px-8 py-4 bg-brand-accent text-black font-bold text-xs uppercase tracking-widest overflow-hidden"
             >
-              Brief Our Team
-              <span className="size-8 border border-brand-border flex items-center justify-center group-hover:border-brand-accent group-hover:text-brand-accent transition-colors">
-                →
-              </span>
+              <span className="relative z-10">Start a Conversation</span>
+              <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
             </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((s) => (
-              <article
-                key={s.n}
-                className="group p-8 border border-brand-border bg-brand-card hover:border-brand-accent transition-all"
-              >
-                <div className="size-12 bg-white/5 border border-white/10 flex items-center justify-center mb-8 group-hover:bg-brand-accent group-hover:text-black transition-colors">
-                  <span className="font-mono font-bold">{s.n}</span>
-                </div>
-                <h3 className="font-display text-2xl font-bold mb-4 uppercase">{s.title}</h3>
-                <p className="text-stone-400 text-sm leading-relaxed mb-8">{s.desc}</p>
-                <ul className="space-y-3">
-                  {s.bullets.map((b) => (
-                    <li
-                      key={b}
-                      className="flex items-center gap-2 text-[11px] font-mono text-stone-500 tracking-widest"
-                    >
-                      <span className="size-1 bg-brand-accent" /> {b}
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Partner blocks */}
-      <section
-        id="partners"
-        className="grid lg:grid-cols-2 border-y border-brand-border scroll-mt-20"
-      >
-        <div className="border-b lg:border-b-0 lg:border-r border-brand-border p-12 lg:p-20 flex flex-col justify-center">
-          <span className="font-mono text-[10px] text-brand-accent uppercase tracking-[0.4em] mb-6">
-            // PARTNER 001
-          </span>
-          <h3 className="font-display text-3xl md:text-4xl font-bold uppercase mb-6 tracking-tight">
-            Google & GitHub
-          </h3>
-          <p className="text-stone-400 mb-8 max-w-md leading-relaxed">
-            TechXplo proudly collaborates with industry giants like Google and GitHub, leveraging
-            their platforms to build scalable, secure, and innovative software solutions for our
-            clients across South Africa.
-          </p>
-          <ul className="space-y-3 mb-8">
-            {["CLOUD PLATFORMS & TOOLS", "DEVELOPER ECOSYSTEM", "SCALABLE INFRASTRUCTURE"].map(
-              (b) => (
-                <li
-                  key={b}
-                  className="flex items-center gap-3 text-[11px] font-mono text-stone-500 tracking-widest"
-                >
-                  <span className="size-1 bg-brand-accent" /> {b}
-                </li>
-              ),
-            )}
-          </ul>
-          <Link
-            to="/contact"
-            className="text-xs font-mono uppercase tracking-widest text-brand-accent hover:underline"
-          >
-            Partner with us →
-          </Link>
-        </div>
-        <div className="p-12 lg:p-20 flex flex-col justify-center bg-brand-card/40">
-          <span className="font-mono text-[10px] text-brand-accent uppercase tracking-[0.4em] mb-6">
-            // PARTNER 002
-          </span>
-          <h3 className="font-display text-3xl md:text-4xl font-bold uppercase mb-6 tracking-tight">
-            Microsoft & OpenAI
-          </h3>
-          <p className="text-stone-400 mb-8 max-w-md leading-relaxed">
-            Through our collaboration with Microsoft and OpenAI, TechXplo delivers AI-enabled
-            services, intelligent automation, and cutting-edge solutions that drive real business
-            transformation.
-          </p>
-          <ul className="space-y-3 mb-8">
-            {["AI & MACHINE LEARNING", "INTELLIGENT AUTOMATION", "ENTERPRISE INTEGRATION"].map(
-              (b) => (
-                <li
-                  key={b}
-                  className="flex items-center gap-3 text-[11px] font-mono text-stone-500 tracking-widest"
-                >
-                  <span className="size-1 bg-brand-accent" /> {b}
-                </li>
-              ),
-            )}
-          </ul>
-          <Link
-            to="/contact"
-            className="text-xs font-mono uppercase tracking-widest text-brand-accent hover:underline"
-          >
-            Explore AI solutions →
-          </Link>
-        </div>
-      </section>
-
-      {/* Case study / Showcase */}
-      <section id="case" className="px-6 py-16 md:py-24 scroll-mt-20">
-        <div className="max-w-7xl mx-auto">
-          <div className="relative aspect-[4/3] md:aspect-[21/9] border border-brand-border overflow-hidden">
-            <img
-              src={caseStudy}
-              alt="Dark data centre with green accent lighting"
-              loading="lazy"
-              width={1920}
-              height={820}
-              className="absolute inset-0 w-full h-full object-cover opacity-50"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-brand-bg via-brand-bg/70 to-transparent" />
-            <div className="absolute inset-0 flex items-center px-8 md:px-12">
-              <div className="max-w-xl">
-                <div className="text-brand-accent font-mono text-xs mb-4 tracking-widest">
-                  CASE STUDY // 001
-                </div>
-                <h3 className="text-3xl md:text-4xl font-display font-bold uppercase mb-6 tracking-tight">
-                  Digital transformation for a Johannesburg enterprise
-                </h3>
-                <p className="text-stone-300 text-sm md:text-base mb-8 leading-relaxed">
-                  TechXplo modernized legacy systems for a leading Johannesburg enterprise —
-                  migrating core operations to the cloud, deploying custom software solutions, and
-                  reducing operational overhead by 40% within the first quarter.
-                </p>
-                <Link
-                  to="/contact"
-                  className="inline-block px-7 py-3 bg-brand-accent text-black font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-opacity"
-                >
-                  Brief a similar project
-                </Link>
-              </div>
-            </div>
+            <Link
+              to="/services"
+              className="px-8 py-4 border border-brand-border text-xs font-mono uppercase tracking-widest hover:border-brand-accent hover:text-brand-accent transition-all"
+            >
+              Explore Services
+            </Link>
           </div>
         </div>
       </section>
@@ -555,28 +560,36 @@ function Index() {
               </div>
               <ul className="space-y-4">
                 <li>
-                  <a
-                    href="#services"
+                  <Link
+                    to="/about"
+                    className="text-stone-500 text-xs font-mono hover:text-brand-accent uppercase tracking-widest"
+                  >
+                    About
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/services"
                     className="text-stone-500 text-xs font-mono hover:text-brand-accent uppercase tracking-widest"
                   >
                     Services
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#partners"
+                  <Link
+                    to="/partners"
                     className="text-stone-500 text-xs font-mono hover:text-brand-accent uppercase tracking-widest"
                   >
                     Partners
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#case"
+                  <Link
+                    to="/work"
                     className="text-stone-500 text-xs font-mono hover:text-brand-accent uppercase tracking-widest"
                   >
                     Work
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -615,7 +628,11 @@ function Index() {
         </div>
         <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-brand-border flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-mono text-stone-600 tracking-widest">
           <span>© 2026 TechXplo. All rights reserved.</span>
-          <span>V2026.01 // STABLE</span>
+          <div className="flex items-center gap-6">
+            <span>V2026.01 // STABLE</span>
+            <span className="text-stone-700">|</span>
+            <span>Built in Johannesburg</span>
+          </div>
         </div>
       </footer>
     </div>

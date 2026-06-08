@@ -1,47 +1,24 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { services } from "@/data/services";
 
-export const Route = createFileRoute("/contact")({
-  component: Contact,
+export const Route = createFileRoute("/services")({
+  component: Services,
   head: () => ({
     meta: [
-      { title: "Contact — TechXplo" },
+      { title: "Services — TechXplo" },
       {
         name: "description",
         content:
-          "Get in touch with TechXplo. Briefs, quotes, project inquiries. We respond inside one business day.",
+          "Explore TechXplo's full range of services — digital transformation, software development, AI, mobile apps, NPO support, and automation.",
       },
     ],
   }),
 });
 
-const contactSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address"),
-  subject: z.string().min(5, "Subject must be at least 5 characters"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
-});
-
-function Contact() {
+function Services() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
-  const form = useForm<z.infer<typeof contactSchema>>({
-    resolver: zodResolver(contactSchema),
-    defaultValues: { name: "", email: "", subject: "", message: "" },
-  });
-
-  function onSubmit(values: z.infer<typeof contactSchema>) {
-    console.log(values);
-    setSubmitted(true);
-  }
 
   return (
     <div className="min-h-screen bg-brand-bg text-white selection:bg-brand-accent selection:text-black">
@@ -65,7 +42,7 @@ function Contact() {
             </Link>
             <Link
               to="/services"
-              className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
+              className="text-xs font-mono tracking-widest uppercase text-brand-accent transition-colors"
             >
               Services
             </Link>
@@ -83,7 +60,7 @@ function Contact() {
             </Link>
             <Link
               to="/contact"
-              className="text-xs font-mono tracking-widest uppercase text-brand-accent transition-colors"
+              className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
             >
               Contact
             </Link>
@@ -129,7 +106,7 @@ function Contact() {
               <Link
                 to="/services"
                 onClick={() => setMobileOpen(false)}
-                className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
+                className="text-xs font-mono tracking-widest uppercase text-brand-accent transition-colors"
               >
                 Services
               </Link>
@@ -150,7 +127,7 @@ function Contact() {
               <Link
                 to="/contact"
                 onClick={() => setMobileOpen(false)}
-                className="text-xs font-mono tracking-widest uppercase text-brand-accent transition-colors"
+                className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
               >
                 Contact
               </Link>
@@ -166,145 +143,63 @@ function Contact() {
         )}
       </nav>
 
-      {/* Contact */}
-      <section className="px-6 py-16 md:py-24">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12">
-          <div className="lg:col-span-5">
-            <span className="font-mono text-[10px] text-brand-accent uppercase tracking-[0.4em]">
-              // CONTACT
-            </span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold uppercase tracking-tight mt-4 mb-6">
-              Open a line.
-            </h2>
-            <p className="text-stone-400 leading-relaxed max-w-md mb-12">
-              Briefs, quotes, project inquiries. We respond inside one business day from our
-              Johannesburg operations centre.
-            </p>
-            <div className="grid sm:grid-cols-2 gap-px bg-brand-border border border-brand-border">
-              {[
-                { l: "Phone", v: "+27 67 853 0148", href: "tel:+27678530148" },
-                { l: "Email", v: "admin@techxplo.co.za", href: "mailto:admin@techxplo.co.za" },
-                { l: "Address", v: "Johannesburg, South Africa" },
-                { l: "Hours", v: "Mon–Fri · 09:00 – 18:00 SAST" },
-              ].map((c) => (
-                <div key={c.l} className="bg-brand-bg p-6">
-                  <div className="text-[10px] font-mono uppercase tracking-[0.3em] text-stone-500 mb-3">
-                    {c.l}
-                  </div>
-                  {c.href ? (
-                    <a
-                      href={c.href}
-                      className="text-base font-display font-bold hover:text-brand-accent transition-colors break-words"
-                    >
-                      {c.v}
-                    </a>
-                  ) : (
-                    <p className="text-base font-display font-bold">{c.v}</p>
-                  )}
-                </div>
-              ))}
+      {/* Services */}
+      <section className="py-16 md:py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-16 gap-6">
+            <div>
+              <h2 className="font-display text-4xl md:text-5xl font-bold uppercase tracking-tight">
+                What We Do
+              </h2>
+              <p className="text-stone-500 font-mono text-xs mt-3 tracking-widest">
+                [ CORE SERVICE DIRECTORY ]
+              </p>
             </div>
+            <div className="hidden md:block h-px bg-brand-border flex-grow mx-12 mb-4" />
+            <Link
+              to="/contact"
+              className="group flex items-center gap-3 text-xs font-mono uppercase tracking-widest"
+            >
+              Brief Our Team
+              <span className="size-8 border border-brand-border flex items-center justify-center group-hover:border-brand-accent group-hover:text-brand-accent transition-colors">
+                →
+              </span>
+            </Link>
           </div>
 
-          <div className="lg:col-span-7">
-            {submitted ? (
-              <div className="border border-brand-accent bg-brand-card p-10 text-center">
-                <div className="text-5xl mb-4 text-brand-accent">✓</div>
-                <h3 className="font-display text-2xl font-bold uppercase mb-2">Message received</h3>
-                <p className="text-stone-400">We'll get back to you within one business day.</p>
-              </div>
-            ) : (
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="text-xs font-mono uppercase tracking-[0.3em] text-stone-500 mb-2">
-                          Name
-                        </div>
-                        <FormControl>
-                          <Input
-                            placeholder="Your name"
-                            className="bg-brand-card border-brand-border text-white placeholder:text-stone-600 px-4 py-3 h-auto text-sm"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage className="text-xs text-red-400" />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="text-xs font-mono uppercase tracking-[0.3em] text-stone-500 mb-2">
-                          Email
-                        </div>
-                        <FormControl>
-                          <Input
-                            placeholder="you@example.com"
-                            className="bg-brand-card border-brand-border text-white placeholder:text-stone-600 px-4 py-3 h-auto text-sm"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage className="text-xs text-red-400" />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="subject"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="text-xs font-mono uppercase tracking-[0.3em] text-stone-500 mb-2">
-                          Subject
-                        </div>
-                        <FormControl>
-                          <Input
-                            placeholder="What is this regarding?"
-                            className="bg-brand-card border-brand-border text-white placeholder:text-stone-600 px-4 py-3 h-auto text-sm"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage className="text-xs text-red-400" />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="message"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="text-xs font-mono uppercase tracking-[0.3em] text-stone-500 mb-2">
-                          Message
-                        </div>
-                        <FormControl>
-                          <Textarea
-                            placeholder="Tell us about your project..."
-                            className="bg-brand-card border-brand-border text-white placeholder:text-stone-600 px-4 py-3 h-auto text-sm min-h-[140px]"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage className="text-xs text-red-400" />
-                      </FormItem>
-                    )}
-                  />
-
-                  <button
-                    type="submit"
-                    className="px-7 py-3 bg-brand-accent text-black font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-opacity cursor-pointer"
-                  >
-                    Send Message
-                  </button>
-                </form>
-              </Form>
-            )}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {services.map((s) => (
+              <article
+                key={s.n}
+                className="group p-8 border border-brand-border bg-brand-card hover:border-brand-accent transition-all"
+              >
+                <div className="size-12 bg-white/5 border border-white/10 flex items-center justify-center mb-8 group-hover:bg-brand-accent group-hover:text-black transition-colors">
+                  <span className="font-mono font-bold">{s.n}</span>
+                </div>
+                <h3 className="font-display text-2xl font-bold mb-4 uppercase">{s.title}</h3>
+                <p className="text-stone-400 text-sm leading-relaxed mb-8">{s.desc}</p>
+                <ul className="space-y-3 mb-8">
+                  {s.bullets.map((b) => (
+                    <li
+                      key={b}
+                      className="flex items-center gap-2 text-[11px] font-mono text-stone-500 tracking-widest"
+                    >
+                      <span className="size-1 bg-brand-accent" /> {b}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  to={"/services/$slug"}
+                  params={{ slug: s.slug }}
+                  className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-brand-accent"
+                >
+                  Learn More
+                  <span className="inline-block transition-transform group-hover:translate-x-1">
+                    →
+                  </span>
+                </Link>
+              </article>
+            ))}
           </div>
         </div>
       </section>
@@ -331,14 +226,6 @@ function Contact() {
                 Directory
               </div>
               <ul className="space-y-4">
-                <li>
-                  <Link
-                    to="/about"
-                    className="text-stone-500 text-xs font-mono hover:text-brand-accent uppercase tracking-widest"
-                  >
-                    About
-                  </Link>
-                </li>
                 <li>
                   <Link
                     to="/services"

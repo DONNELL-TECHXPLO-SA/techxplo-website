@@ -1,47 +1,22 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-
-export const Route = createFileRoute("/contact")({
-  component: Contact,
+export const Route = createFileRoute("/about")({
+  component: About,
   head: () => ({
     meta: [
-      { title: "Contact — TechXplo" },
+      { title: "About — TechXplo" },
       {
         name: "description",
         content:
-          "Get in touch with TechXplo. Briefs, quotes, project inquiries. We respond inside one business day.",
+          "TechXplo is a technology consultancy bridging industry needs with cutting-edge solutions. Learn our story, values, and mission.",
       },
     ],
   }),
 });
 
-const contactSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address"),
-  subject: z.string().min(5, "Subject must be at least 5 characters"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
-});
-
-function Contact() {
+function About() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
-  const form = useForm<z.infer<typeof contactSchema>>({
-    resolver: zodResolver(contactSchema),
-    defaultValues: { name: "", email: "", subject: "", message: "" },
-  });
-
-  function onSubmit(values: z.infer<typeof contactSchema>) {
-    console.log(values);
-    setSubmitted(true);
-  }
 
   return (
     <div className="min-h-screen bg-brand-bg text-white selection:bg-brand-accent selection:text-black">
@@ -59,7 +34,7 @@ function Contact() {
           <div className="hidden md:flex items-center gap-10">
             <Link
               to="/about"
-              className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
+              className="text-xs font-mono tracking-widest uppercase text-brand-accent transition-colors"
             >
               About
             </Link>
@@ -122,7 +97,7 @@ function Contact() {
               <Link
                 to="/about"
                 onClick={() => setMobileOpen(false)}
-                className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
+                className="text-xs font-mono tracking-widest uppercase text-brand-accent transition-colors"
               >
                 About
               </Link>
@@ -166,145 +141,82 @@ function Contact() {
         )}
       </nav>
 
-      {/* Contact */}
-      <section className="px-6 py-16 md:py-24">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12">
-          <div className="lg:col-span-5">
-            <span className="font-mono text-[10px] text-brand-accent uppercase tracking-[0.4em]">
-              // CONTACT
-            </span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold uppercase tracking-tight mt-4 mb-6">
-              Open a line.
-            </h2>
-            <p className="text-stone-400 leading-relaxed max-w-md mb-12">
-              Briefs, quotes, project inquiries. We respond inside one business day from our
-              Johannesburg operations centre.
-            </p>
-            <div className="grid sm:grid-cols-2 gap-px bg-brand-border border border-brand-border">
-              {[
-                { l: "Phone", v: "+27 67 853 0148", href: "tel:+27678530148" },
-                { l: "Email", v: "admin@techxplo.co.za", href: "mailto:admin@techxplo.co.za" },
-                { l: "Address", v: "Johannesburg, South Africa" },
-                { l: "Hours", v: "Mon–Fri · 09:00 – 18:00 SAST" },
-              ].map((c) => (
-                <div key={c.l} className="bg-brand-bg p-6">
-                  <div className="text-[10px] font-mono uppercase tracking-[0.3em] text-stone-500 mb-3">
-                    {c.l}
+      {/* About */}
+      <section className="py-16 md:py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-16 gap-6">
+            <div>
+              <h2 className="font-display text-4xl md:text-5xl font-bold uppercase tracking-tight">
+                About Us
+              </h2>
+              <p className="text-stone-500 font-mono text-xs mt-3 tracking-widest">[ OUR STORY ]</p>
+            </div>
+            <div className="hidden md:block h-px bg-brand-border flex-grow mx-12 mb-4" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-16">
+            <div>
+              <p className="text-stone-300 md:text-lg leading-relaxed mb-6">
+                TechXplo is a technology consultancy focused on bridging the gap between industry
+                needs and cutting-edge solutions. We achieve this by integrating seasoned
+                professionals into real-world projects within the workspace.
+              </p>
+              <p className="text-stone-400 leading-relaxed">
+                We are a thriving community of innovators driving meaningful impact through
+                technology. At the core of everything we do are the values that guide our mission
+                and shape our approach.
+              </p>
+            </div>
+            <div className="md:border-l border-brand-border md:pl-12">
+              <blockquote className="font-display text-xl md:text-3xl font-bold italic text-brand-accent leading-tight">
+                "Our mission is to empower the next generation of tech innovators."
+              </blockquote>
+              <div className="mt-6 space-y-4">
+                {[
+                  {
+                    label: "Inclusion & Diversity",
+                    desc: "We embrace diversity and create an inclusive space for everyone to thrive.",
+                  },
+                  {
+                    label: "Constant Innovation",
+                    desc: "We're dedicated to fostering talent, creativity, and meaningful connections.",
+                  },
+                  {
+                    label: "Servant Leadership",
+                    desc: "We lead through service, putting our community's needs first to empower.",
+                  },
+                ].map((p) => (
+                  <div key={p.label}>
+                    <div className="text-sm font-mono font-bold text-white uppercase tracking-widest">
+                      {p.label}
+                    </div>
+                    <div className="text-stone-400 text-sm mt-1">{p.desc}</div>
                   </div>
-                  {c.href ? (
-                    <a
-                      href={c.href}
-                      className="text-base font-display font-bold hover:text-brand-accent transition-colors break-words"
-                    >
-                      {c.v}
-                    </a>
-                  ) : (
-                    <p className="text-base font-display font-bold">{c.v}</p>
-                  )}
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
 
-          <div className="lg:col-span-7">
-            {submitted ? (
-              <div className="border border-brand-accent bg-brand-card p-10 text-center">
-                <div className="text-5xl mb-4 text-brand-accent">✓</div>
-                <h3 className="font-display text-2xl font-bold uppercase mb-2">Message received</h3>
-                <p className="text-stone-400">We'll get back to you within one business day.</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 border-t border-brand-border pt-12">
+            {[
+              {
+                v: "Innovation",
+                d: "We embrace creativity and push boundaries to spark new ideas.",
+              },
+              { v: "Collaboration", d: "Success is built on teamwork and diverse perspectives." },
+              { v: "Growth", d: "Continuous personal and professional learning." },
+              { v: "Impact", d: "Creating meaningful, sustainable change." },
+            ].map((val) => (
+              <div
+                key={val.v}
+                className="text-center p-4 md:p-6 border border-brand-border bg-brand-card/40 break-words"
+              >
+                <div className="font-display text-lg md:text-xl font-bold text-brand-accent uppercase mb-2">
+                  {val.v}
+                </div>
+                <div className="text-stone-400 text-xs md:text-sm">{val.d}</div>
               </div>
-            ) : (
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="text-xs font-mono uppercase tracking-[0.3em] text-stone-500 mb-2">
-                          Name
-                        </div>
-                        <FormControl>
-                          <Input
-                            placeholder="Your name"
-                            className="bg-brand-card border-brand-border text-white placeholder:text-stone-600 px-4 py-3 h-auto text-sm"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage className="text-xs text-red-400" />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="text-xs font-mono uppercase tracking-[0.3em] text-stone-500 mb-2">
-                          Email
-                        </div>
-                        <FormControl>
-                          <Input
-                            placeholder="you@example.com"
-                            className="bg-brand-card border-brand-border text-white placeholder:text-stone-600 px-4 py-3 h-auto text-sm"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage className="text-xs text-red-400" />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="subject"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="text-xs font-mono uppercase tracking-[0.3em] text-stone-500 mb-2">
-                          Subject
-                        </div>
-                        <FormControl>
-                          <Input
-                            placeholder="What is this regarding?"
-                            className="bg-brand-card border-brand-border text-white placeholder:text-stone-600 px-4 py-3 h-auto text-sm"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage className="text-xs text-red-400" />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="message"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="text-xs font-mono uppercase tracking-[0.3em] text-stone-500 mb-2">
-                          Message
-                        </div>
-                        <FormControl>
-                          <Textarea
-                            placeholder="Tell us about your project..."
-                            className="bg-brand-card border-brand-border text-white placeholder:text-stone-600 px-4 py-3 h-auto text-sm min-h-[140px]"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage className="text-xs text-red-400" />
-                      </FormItem>
-                    )}
-                  />
-
-                  <button
-                    type="submit"
-                    className="px-7 py-3 bg-brand-accent text-black font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-opacity cursor-pointer"
-                  >
-                    Send Message
-                  </button>
-                </form>
-              </Form>
-            )}
+            ))}
           </div>
         </div>
       </section>
@@ -361,6 +273,14 @@ function Contact() {
                     className="text-stone-500 text-xs font-mono hover:text-brand-accent uppercase tracking-widest"
                   >
                     Work
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/contact"
+                    className="text-stone-500 text-xs font-mono hover:text-brand-accent uppercase tracking-widest"
+                  >
+                    Contact
                   </Link>
                 </li>
               </ul>
