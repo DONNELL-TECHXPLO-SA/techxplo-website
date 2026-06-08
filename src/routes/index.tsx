@@ -1,38 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef } from "react";
-import heroBoard from "@/assets/hero-board.jpg";
+
 import caseStudy from "@/assets/case-study.jpg";
 
-function CloudinaryHeroVideo() {
-  const ref = useRef<HTMLVideoElement>(null);
-  const playerRef = useRef<ReturnType<import("cloudinary-video-player")["default"]["player"]>>();
-
-  useEffect(() => {
-    if (!ref.current) return;
-    (async () => {
-      const cloudinary = await import("cloudinary-video-player");
-      await import("cloudinary-video-player/player.min.css");
-      playerRef.current = cloudinary.default.player(ref.current!, {
-        cloudName: "dusug5s9p",
-        publicId: "17076-278405108_wigpqo",
-        autoplay: true,
-        muted: true,
-        loop: true,
-        controls: false,
-        preload: "auto",
-      });
-    })();
-    return () => {
-      if (playerRef.current) playerRef.current.destroy();
-    };
-  }, []);
-
+function HeroVideo() {
   return (
     <video
-      ref={ref}
-      className="cld-video-player absolute inset-0 w-full h-full object-cover"
+      autoPlay
+      muted
+      loop
       playsInline
-    />
+      preload="auto"
+      className="absolute inset-0 w-full h-full object-cover grayscale contrast-200 brightness-90 opacity-30"
+    >
+      <source src="/videos/hero-bg.mp4" type="video/mp4" />
+    </video>
   );
 }
 
@@ -153,12 +134,12 @@ function Index() {
       {/* Hero */}
       <section id="top" className="relative pt-12 md:pt-20 pb-20 px-6 overflow-hidden">
         <div className="absolute inset-0">
-          <CloudinaryHeroVideo />
+          <HeroVideo />
         </div>
         <div className="absolute inset-0 bg-black/60" />
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="grid grid-cols-12 gap-8 items-end">
-            <div className="col-span-12 lg:col-span-8">
+            <div className="col-span-12">
               <div className="inline-flex items-center gap-3 px-3 py-1 border border-brand-border rounded-full mb-8">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent opacity-75" />
@@ -199,20 +180,6 @@ function Index() {
                 </a>
               </div>
             </div>
-            <div className="col-span-12 lg:col-span-4 flex flex-col items-end">
-              <div className="w-full aspect-square border border-brand-border bg-brand-card/80 p-1 relative">
-                <img
-                  src={heroBoard}
-                  alt="Macro shot of a high-performance computing board"
-                  width={1024}
-                  height={1024}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute bottom-4 left-4 font-mono text-[10px] text-brand-accent">
-                  [JOHANNESBURG · LAT -26.20 · LON 28.04]
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -247,28 +214,13 @@ function Index() {
         <p className="text-center text-[10px] font-mono uppercase tracking-[0.4em] text-stone-500 mb-6">
           Trusted by industry leaders
         </p>
-        <div className="relative">
-          <div className="flex w-max animate-marquee gap-16 items-center px-8">
-            {[
-              "GOOGLE",
-              "GITHUB",
-              "MICROSOFT",
-              "OPENAI",
-              "CANVA",
-              "TECHXPLO",
-              "GOOGLE",
-              "GITHUB",
-              "MICROSOFT",
-              "OPENAI",
-              "CANVA",
-              "TECHXPLO",
-            ].map((c, i) => (
-              <span
-                key={i}
-                className="font-display text-xl font-bold tracking-tighter text-stone-500 whitespace-nowrap"
-              >
-                {c}
-              </span>
+        <div className="overflow-hidden whitespace-nowrap px-8">
+          <div className="inline-block animate-marquee">
+            {["GOOGLE","GITHUB","MICROSOFT","OPENAI","CANVA","TECHXPLO"].map((c) => (
+              <span key={c} className="inline-block font-display text-xl font-bold tracking-tighter text-stone-500">{c}<span className="mx-8 invisible">|</span></span>
+            ))}
+            {["GOOGLE","GITHUB","MICROSOFT","OPENAI","CANVA","TECHXPLO"].map((c) => (
+              <span key={c} className="inline-block font-display text-xl font-bold tracking-tighter text-stone-500">{c}<span className="mx-8 invisible">|</span></span>
             ))}
           </div>
         </div>
