@@ -1,4 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 
 import caseStudy from "@/assets/case-study.jpg";
 
@@ -77,6 +78,7 @@ const services = [
 ];
 
 function Index() {
+  const [mobileOpen, setMobileOpen] = useState(false);
   return (
     <div className="min-h-screen bg-brand-bg text-white selection:bg-brand-accent selection:text-black">
       {/* Nav */}
@@ -115,24 +117,75 @@ function Index() {
             >
               Work
             </a>
-            <a
-              href="#contact"
+            <Link
+              to="/contact"
               className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
             >
               Contact
-            </a>
+            </Link>
           </div>
-          <a
-            href="#contact"
-            className="px-5 py-2 border border-brand-accent text-brand-accent text-xs font-mono uppercase tracking-widest hover:bg-brand-accent hover:text-black transition-all"
-          >
-            Get In Touch
-          </a>
+          <div className="flex items-center gap-3">
+            <Link
+              to="/contact"
+              className="hidden sm:inline-flex px-5 py-2 border border-brand-accent text-brand-accent text-xs font-mono uppercase tracking-widest hover:bg-brand-accent hover:text-black transition-all"
+            >
+              Get In Touch
+            </Link>
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="md:hidden relative size-10 flex items-center justify-center bg-brand-card border border-brand-border hover:border-brand-accent transition-colors cursor-pointer"
+              aria-label="Toggle menu"
+            >
+              <svg
+                className="size-5 text-white"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                {mobileOpen ? (
+                  <path d="M18 6L6 18M6 6l12 12" />
+                ) : (
+                  <path d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
+        {mobileOpen && (
+          <div className="md:hidden border-t border-brand-border bg-brand-bg/95 backdrop-blur-md">
+            <div className="px-6 py-6 flex flex-col gap-6">
+              {["about", "services", "partners", "case"].map((section) => (
+                <a
+                  key={section}
+                  href={`#${section}`}
+                  onClick={() => setMobileOpen(false)}
+                  className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
+                >
+                  {section === "case" ? "Work" : section.charAt(0).toUpperCase() + section.slice(1)}
+                </a>
+              ))}
+              <Link
+                to="/contact"
+                onClick={() => setMobileOpen(false)}
+                className="text-xs font-mono tracking-widest uppercase hover:text-brand-accent transition-colors"
+              >
+                Contact
+              </Link>
+              <Link
+                to="/contact"
+                onClick={() => setMobileOpen(false)}
+                className="sm:hidden px-5 py-2 border border-brand-accent text-brand-accent text-xs font-mono uppercase tracking-widest hover:bg-brand-accent hover:text-black transition-all text-center"
+              >
+                Get In Touch
+              </Link>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Hero */}
-      <section id="top" className="relative pt-12 md:pt-20 pb-20 px-6 overflow-hidden">
+      <section id="top" className="relative pt-16 md:pt-20 pb-16 md:pb-20 px-6 overflow-hidden">
         <div className="absolute inset-0">
           <HeroVideo />
         </div>
@@ -166,12 +219,12 @@ function Index() {
                 to digital transformation and AI-enabled services across South Africa.
               </p>
               <div className="flex flex-wrap gap-4">
-                <a
-                  href="#contact"
+                <Link
+                  to="/contact"
                   className="px-7 py-3 bg-brand-accent text-black font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-opacity"
                 >
                   Get a Quote
-                </a>
+                </Link>
                 <a
                   href="#services"
                   className="px-7 py-3 border border-brand-border text-xs font-mono uppercase tracking-widest hover:border-brand-accent hover:text-brand-accent transition-colors"
@@ -193,7 +246,10 @@ function Index() {
             { l: "Social Following", v: "700", a: "+" },
             { l: "Projects Delivered", v: "50", a: "+" },
           ].map((s, i) => (
-            <div key={s.l} className={`p-8 ${i < 3 ? "border-r border-brand-border" : ""}`}>
+            <div
+              key={s.l}
+              className={`p-8 border-r border-brand-border even:border-r-0 md:even:border-r ${i === 3 ? "md:border-r-0" : ""} ${i < 2 ? "border-b md:border-b-0 border-brand-border" : ""}`}
+            >
               <div className="text-xs font-mono text-stone-500 mb-2 uppercase tracking-widest">
                 {s.l}
               </div>
@@ -216,18 +272,30 @@ function Index() {
         </p>
         <div className="overflow-hidden whitespace-nowrap px-8">
           <div className="inline-block animate-marquee">
-            {["GOOGLE","GITHUB","MICROSOFT","OPENAI","CANVA","TECHXPLO"].map((c) => (
-              <span key={c} className="inline-block font-display text-xl font-bold tracking-tighter text-stone-500">{c}<span className="mx-8 invisible">|</span></span>
+            {["GOOGLE", "GITHUB", "MICROSOFT", "OPENAI", "CANVA", "TECHXPLO"].map((c) => (
+              <span
+                key={c}
+                className="inline-block font-display text-xl font-bold tracking-tighter text-stone-500"
+              >
+                {c}
+                <span className="mx-8 invisible">|</span>
+              </span>
             ))}
-            {["GOOGLE","GITHUB","MICROSOFT","OPENAI","CANVA","TECHXPLO"].map((c) => (
-              <span key={c} className="inline-block font-display text-xl font-bold tracking-tighter text-stone-500">{c}<span className="mx-8 invisible">|</span></span>
+            {["GOOGLE", "GITHUB", "MICROSOFT", "OPENAI", "CANVA", "TECHXPLO"].map((c) => (
+              <span
+                key={c}
+                className="inline-block font-display text-xl font-bold tracking-tighter text-stone-500"
+              >
+                {c}
+                <span className="mx-8 invisible">|</span>
+              </span>
             ))}
           </div>
         </div>
       </section>
 
       {/* About */}
-      <section id="about" className="py-24 px-6 scroll-mt-20">
+      <section id="about" className="py-16 md:py-24 px-6 scroll-mt-20">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-16 gap-6">
             <div>
@@ -307,7 +375,7 @@ function Index() {
       </section>
 
       {/* Services */}
-      <section id="services" className="py-24 px-6 scroll-mt-20">
+      <section id="services" className="py-16 md:py-24 px-6 scroll-mt-20">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-16 gap-6">
             <div>
@@ -319,15 +387,15 @@ function Index() {
               </p>
             </div>
             <div className="hidden md:block h-px bg-brand-border flex-grow mx-12 mb-4" />
-            <a
-              href="#contact"
+            <Link
+              to="/contact"
               className="group flex items-center gap-3 text-xs font-mono uppercase tracking-widest"
             >
               Brief Our Team
               <span className="size-8 border border-brand-border flex items-center justify-center group-hover:border-brand-accent group-hover:text-brand-accent transition-colors">
                 →
               </span>
-            </a>
+            </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -386,12 +454,12 @@ function Index() {
               ),
             )}
           </ul>
-          <a
-            href="#contact"
+          <Link
+            to="/contact"
             className="text-xs font-mono uppercase tracking-widest text-brand-accent hover:underline"
           >
             Partner with us →
-          </a>
+          </Link>
         </div>
         <div className="p-12 lg:p-20 flex flex-col justify-center bg-brand-card/40">
           <span className="font-mono text-[10px] text-brand-accent uppercase tracking-[0.4em] mb-6">
@@ -417,19 +485,19 @@ function Index() {
               ),
             )}
           </ul>
-          <a
-            href="#contact"
+          <Link
+            to="/contact"
             className="text-xs font-mono uppercase tracking-widest text-brand-accent hover:underline"
           >
             Explore AI solutions →
-          </a>
+          </Link>
         </div>
       </section>
 
       {/* Case study / Showcase */}
-      <section id="case" className="px-6 py-24 scroll-mt-20">
+      <section id="case" className="px-6 py-16 md:py-24 scroll-mt-20">
         <div className="max-w-7xl mx-auto">
-          <div className="relative aspect-[21/9] border border-brand-border overflow-hidden">
+          <div className="relative aspect-[4/3] md:aspect-[21/9] border border-brand-border overflow-hidden">
             <img
               src={caseStudy}
               alt="Dark data centre with green accent lighting"
@@ -452,56 +520,14 @@ function Index() {
                   migrating core operations to the cloud, deploying custom software solutions, and
                   reducing operational overhead by 40% within the first quarter.
                 </p>
-                <a
-                  href="#contact"
+                <Link
+                  to="/contact"
                   className="inline-block px-7 py-3 bg-brand-accent text-black font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-opacity"
                 >
                   Brief a similar project
-                </a>
+                </Link>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact */}
-      <section id="contact" className="px-6 py-24 border-t border-brand-border scroll-mt-20">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12">
-          <div className="lg:col-span-5">
-            <span className="font-mono text-[10px] text-brand-accent uppercase tracking-[0.4em]">
-              // CONTACT
-            </span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold uppercase tracking-tight mt-4 mb-6">
-              Open a line.
-            </h2>
-            <p className="text-stone-400 leading-relaxed max-w-md">
-              Briefs, quotes, project inquiries. We respond inside one business day from our
-              Johannesburg operations centre.
-            </p>
-          </div>
-          <div className="lg:col-span-7 grid sm:grid-cols-2 gap-px bg-brand-border border border-brand-border">
-            {[
-              { l: "Phone", v: "+27 67 853 0148", href: "tel:+27678530148" },
-              { l: "Email", v: "admin@techxplo.co.za", href: "mailto:admin@techxplo.co.za" },
-              { l: "Address", v: "Johannesburg, South Africa" },
-              { l: "Hours", v: "Mon–Fri · 09:00 – 18:00 SAST" },
-            ].map((c) => (
-              <div key={c.l} className="bg-brand-bg p-8">
-                <div className="text-[10px] font-mono uppercase tracking-[0.3em] text-stone-500 mb-3">
-                  {c.l}
-                </div>
-                {c.href ? (
-                  <a
-                    href={c.href}
-                    className="text-lg font-display font-bold hover:text-brand-accent transition-colors break-words"
-                  >
-                    {c.v}
-                  </a>
-                ) : (
-                  <p className="text-lg font-display font-bold">{c.v}</p>
-                )}
-              </div>
-            ))}
           </div>
         </div>
       </section>
@@ -576,12 +602,12 @@ function Index() {
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="#contact"
+                  <Link
+                    to="/contact"
                     className="text-stone-500 text-xs font-mono hover:text-brand-accent uppercase tracking-widest"
                   >
                     Visit
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
