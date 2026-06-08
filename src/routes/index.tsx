@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import useEmblaCarousel from "embla-carousel-react";
 
 import heroBoard from "@/assets/hero-board.jpg";
 
@@ -15,6 +16,92 @@ function HeroVideo() {
     >
       <source src="/videos/hero-bg.mp4" type="video/mp4" />
     </video>
+  );
+}
+
+const phases = [
+  {
+    step: "01",
+    title: "Discover",
+    desc: "We immerse ourselves in your world — your users, your data, your goals. No assumptions, just evidence.",
+    icon: "◐",
+  },
+  {
+    step: "02",
+    title: "Design",
+    desc: "Architecture, UX, and system design that balances ambition with practicality. We blueprint before we build.",
+    icon: "◇",
+  },
+  {
+    step: "03",
+    title: "Build",
+    desc: "Agile sprints, continuous integration, and transparent progress. You see every commit, every milestone.",
+    icon: "▣",
+  },
+  {
+    step: "04",
+    title: "Scale",
+    desc: "Launch, monitor, iterate. We stay with you through deployment and beyond, ensuring your solution grows with you.",
+    icon: "⤴",
+  },
+];
+
+function MobileCarousel() {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ align: "start", loop: false });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    setScrollSnaps(emblaApi.scrollSnapList());
+    emblaApi.on("select", onSelect);
+    onSelect();
+  }, [emblaApi, onSelect]);
+
+  return (
+    <div className="md:hidden">
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex" style={{ touchAction: "pan-y" }}>
+          {phases.map((phase) => (
+            <div
+              key={phase.step}
+              className="min-w-0 shrink-0 grow-0 basis-[80%] pl-4 first:pl-0"
+            >
+              <div className="bg-brand-bg border border-brand-border p-8 group hover:bg-brand-card transition-colors h-full select-none">
+                <div className="text-3xl mb-6 text-brand-accent/40 group-hover:text-brand-accent transition-colors">
+                  {phase.icon}
+                </div>
+                <div className="text-[10px] font-mono text-brand-accent mb-3 tracking-widest">
+                  STEP {phase.step}
+                </div>
+                <h3 className="font-display text-xl font-bold uppercase mb-4">{phase.title}</h3>
+                <p className="text-stone-500 text-sm leading-relaxed">{phase.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex justify-center gap-2 mt-6">
+        {scrollSnaps.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => emblaApi?.scrollTo(i)}
+            className={`size-2 rounded-full transition-all cursor-pointer ${
+              i === selectedIndex
+                ? "bg-brand-accent w-6"
+                : "bg-stone-700 hover:bg-stone-500"
+            }`}
+            aria-label={`Go to slide ${i + 1}`}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -402,33 +489,9 @@ function Index() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-4 gap-px bg-brand-border">
-            {[
-              {
-                step: "01",
-                title: "Discover",
-                desc: "We immerse ourselves in your world — your users, your data, your goals. No assumptions, just evidence.",
-                icon: "◐",
-              },
-              {
-                step: "02",
-                title: "Design",
-                desc: "Architecture, UX, and system design that balances ambition with practicality. We blueprint before we build.",
-                icon: "◇",
-              },
-              {
-                step: "03",
-                title: "Build",
-                desc: "Agile sprints, continuous integration, and transparent progress. You see every commit, every milestone.",
-                icon: "▣",
-              },
-              {
-                step: "04",
-                title: "Scale",
-                desc: "Launch, monitor, iterate. We stay with you through deployment and beyond, ensuring your solution grows with you.",
-                icon: "⤴",
-              },
-            ].map((phase) => (
+          {/* Desktop grid */}
+          <div className="hidden md:grid md:grid-cols-4 gap-px bg-brand-border">
+            {phases.map((phase) => (
               <div
                 key={phase.step}
                 className="bg-brand-bg p-8 md:p-10 relative group hover:bg-brand-card transition-colors"
@@ -445,6 +508,9 @@ function Index() {
               </div>
             ))}
           </div>
+
+          {/* Mobile carousel */}
+          <MobileCarousel />
         </div>
       </section>
 
